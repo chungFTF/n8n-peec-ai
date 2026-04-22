@@ -1,0 +1,8 @@
+# Real data outputs — do not commit
+*.json
+*.html
+results.txt
+test.md
+
+# OS
+.DS_Store
