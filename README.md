@@ -1,99 +1,121 @@
-# n8n × Peec AI — Daily Competitive Intelligence Automation
+# n8n x Peec AI: Competitive Intelligence Automation
 
-An n8n workflow that runs daily, pulls brand visibility data from Peec AI, and delivers a structured competitive intelligence report to your inbox.
+This repository contains an n8n automation workflow that pulls daily AI visibility data from Peec AI, generates structured competitive insights, and outputs report-ready content (Markdown + HTML email) in both English and Chinese.
 
-> **Disclaimer:** All brand names used in this project (lululemon, Nike, Alo Yoga, Vuori, Gymshark, etc.) are referenced solely for educational and research purposes. This project is not affiliated with, endorsed by, or intended for commercial use against any of these brands.
+> Disclaimer: Brand names used in examples are for educational and research demonstration only. This project is not affiliated with or endorsed by those brands.
 
----
+## Overview
 
-## What It Does
+The workflow is designed to run on a schedule and execute an end-to-end intelligence pipeline:
 
-Every morning, the workflow:
+1. Fetch core datasets from Peec AI (brand performance, shopping queries, AI search behavior, and domain citations).
+2. Clean and normalize each dataset into analysis-ready JSON.
+3. Compute strategic indicators such as vulnerability score, market saturation, and market status.
+4. Generate AI analysis output with a strict schema (top threat, attack targets, opportunities, content strategy, and action plan).
+5. Convert the output into Markdown and styled HTML for email delivery.
+6. Feed copy/content strategy outputs into downstream execution nodes.
 
-1. Fetches 7 days of data from Peec AI via MCP — brand visibility, shopping queries, AI-generated search terms, and domain citations
-2. Cleans each dataset and calculates competitive metrics (vulnerability score, market saturation, intent classification)
-3. Merges all data and passes it to a Claude AI Agent for analysis
-4. Generates a structured report covering top threats, attack targets, content gaps, and copy direction
-5. Converts the report to a styled HTML email and sends it via Gmail
+## Repository Structure
 
----
-
-## Folder Structure
-
-```
-src/
-  clean_brand_report.js     Calculates vulnerability score, saturation, market status per brand
-  clean_shopping_queries.js Classifies purchase intent, sorts queries by priority
-  clean_search_queries.js   Extracts brand mentions from AI-generated search terms
-  clean_domain_report.js    Groups domains by type, surfaces content gap targets
-  merge_intel.js            Combines all 4 outputs into one JSON for the AI Agent
-  prompt.txt                Claude AI Agent prompt — rules, output schema, analysis logic
-  json_to_markdown.js       Parses AI output into clean JSON + Markdown
-  html_email.js             Converts Markdown to styled HTML email
-
+```text
 docs/
-  ALGORITHM.md              Technical reference — formulas, data flow, edge cases
-  FOR_PM.md                 Non-technical overview — how to read the report, what the numbers mean
-  WORKFLOW.md               Full n8n workflow documentation
+  ALGORITHM.md                      Technical formulas and decision logic
+  FOR_PM.md                         Non-technical overview for stakeholders
+  WORKFLOW.md                       n8n workflow documentation
+
+src/
+  clean_brand_report.js             Cleans brand data, computes vulnerability and evolution deltas
+  clean_domain_report.js            Cleans domain citation/retrieval data and gap signals
+  clean_search_queries.js           Extracts AI-generated search terms and brand mention signals
+  clean_shopping_queries.js         Classifies shopping intent queries
+  merge_intel.js                    Merges cleaned branches into one payload
+  combine_strategy_with_docs.js     Combines strategy outputs with generated docs
+  combine_docs_with_content.js      Merges content artifacts for final delivery
+  consolidate_for_agent.js          Consolidates payload for agent input
+  extract_agent_sections.js         Extracts structured sections from agent output
+  extract_copy_matrix.js            Extracts copy instruction matrix
+  extract_top_urls.js               Extracts top URLs for analysis context
+  prepare_copy_agent_input.js       Builds copy-agent input from strategy signals
+  split_copy_outputs.js             Splits copy outputs into publishable items
+  prompt.txt                        Base prompt (legacy/general)
+
+lang/en/
+  json_to_markdown_en.js            English JSON -> Markdown renderer
+  html_email_en.js                  English Markdown -> HTML email renderer
+  src/
+    prompt_en.txt                   English analysis prompt and schema rules
+    prompt_copy_agent_en.txt        English copy-agent prompt
+    prompt_copy_writer_en.txt       English copy-writer prompt
+
+lang/zh/
+  json_to_markdown.js               Chinese JSON -> Markdown renderer
+  html_email.js                     Chinese Markdown -> HTML email renderer
+  src/
+    prompt_zh.txt                   Chinese analysis prompt and schema rules
+    prompt_copy_agent_zh.txt        Chinese copy-agent prompt
+    prompt_copy_writer_zh.txt       Chinese copy-writer prompt
 ```
 
----
-
-## Core Metrics
+## Key Metrics
 
 ### Vulnerability Score
-Measures how attackable a competitor is based on their AI visibility vs. reputation.
 
-```
-vulnerability_score = (100 − sentiment) / position
+Used to identify competitors that are highly visible but weak in sentiment.
+
+```text
+vulnerability_score = (100 - sentiment) / position
 ```
 
-Only calculated for brands with `position ≤ 5`. Brands ranked lower have no meaningful threat value. Blue Ocean brands always score 0 and are never treated as attack targets.
+- Applied only when `position` is between 1 and 5.
+- If rank is outside top 5, score is treated as `0`.
 
 ### Market Saturation
-Measures how contested a market segment is.
 
+Used to estimate how crowded a visibility segment is.
+
+```text
+saturation = (visibility_count / visibility_total) * 100
 ```
-saturation = (visibility_count / visibility_total) × 100%
-```
 
-### Market Status Classification
+### Market Status
 
-| Status | Condition | Strategic Meaning |
-|--------|-----------|-------------------|
-| Vulnerable | sentiment < 65 and position ≤ 5 | High exposure but poor reputation — prime attack target |
-| Blue Ocean | visibility < 0.3 and saturation < 20% | Low competition — opportunity to establish presence |
-| Stable | Everything else | Entrenched position, low short-term attack value |
+Typical interpretation logic:
 
----
+- Vulnerable: high exposure but weak sentiment (candidate attack target).
+- Blue Ocean: low visibility and low saturation (white-space opportunity).
+- Stable: relatively defended position.
 
-## Data Sources
+## Data Sources (Peec AI MCP)
 
-All data is pulled from [Peec AI](https://app.peec.ai), which tracks how brands appear across AI engines (ChatGPT, Perplexity, Gemini, etc.) daily.
+Primary MCP functions used by the workflow:
 
-| MCP Function | What It Tracks |
-|---|---|
-| `get_brand_report` | Visibility, sentiment, position, share of voice per brand |
-| `list_shopping_queries` | Purchase-intent queries users ask AI engines |
-| `list_search_queries` | Search terms AI engines generate internally when answering prompts |
-| `get_domain_report` | Which domains AI engines retrieve and cite, and how often |
-
----
+- `get_brand_report`: visibility, sentiment, position, share of voice by brand.
+- `list_shopping_queries`: user purchase-intent query set.
+- `list_search_queries`: AI-generated search terms and mentioned brands.
+- `get_domain_report`: domain retrieval/citation behavior and gaps.
 
 ## Setup
 
-1. Import the n8n workflow JSON into your n8n instance
-2. Connect your **Peec AI MCP** credentials
-3. Connect your **Claude API** credentials (for the AI Agent node)
-4. Connect your **Gmail** credentials
-5. Set your `project_id` in the Peec AI MCP nodes
-6. Configure the Schedule Trigger — recommended: daily at 7am
-7. Run once manually to verify all 4 data branches are returning data before enabling the schedule
+1. Import the workflow JSON into n8n.
+2. Configure credentials for:
+   - Peec AI MCP
+   - LLM provider used in your AI Agent node
+   - Email provider (for example Gmail)
+3. Set the target `project_id` in relevant MCP nodes.
+4. Configure schedule trigger (for example daily run).
+5. Run a manual test once and confirm all branches return valid data.
 
----
+## Output
 
-## Disclaimer
+Depending on language path and workflow branch, the system can output:
 
-The brand names referenced throughout this project — including but not limited to lululemon, Nike, Alo Yoga, Vuori, Gymshark, Beyond Yoga, Athleta, and Sweaty Betty — are used exclusively for **educational and research purposes** to demonstrate GEO (Generative Engine Optimization) analysis techniques.
+- Structured JSON strategy report
+- Markdown report
+- Styled HTML email
+- Copy execution artifacts (matrix + split outputs + doc-linked payloads)
 
-This project is not affiliated with, sponsored by, or commercially directed at any of these brands. It should not be used for commercial competitive intelligence operations targeting real brands without appropriate authorization.
+## Notes
+
+- English and Chinese pipelines are maintained separately under `lang/en` and `lang/zh`.
+- Top threat selection and competitive comparison logic are prompt-driven and schema-constrained.
+- Keep renderer files (`json_to_markdown*`, `html_email*`) aligned with prompt schema changes.
