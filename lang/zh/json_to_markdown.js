@@ -43,13 +43,31 @@ const date = d.report_date || new Date().toISOString().slice(0, 10);
 
 const lines = [];
 
-lines.push(`# Competitive Intelligence Report — ${date}`);
+// ── Header ────────────────────────────────────────────────────
+lines.push(`# 戰略征服儀表板 (Strategic Conquest Dashboard) — ${date}`);
 lines.push('');
 
-// ── Own Brand Summary ─────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+// 第一部分 · 戰場紅點預警 (Battlefield Alert)
+// 優先呈現即時情感與能見度信號（防禦雷達）
+// ══════════════════════════════════════════════════════════════
+lines.push('## 第一部分 · 戰場紅點預警 (Battlefield Alert)');
+lines.push('*品牌資產侵蝕警告 — AI 戰場即時信號*');
+lines.push('');
+
+if ((d.evolution_highlights || []).length > 0) {
+  d.evolution_highlights.forEach(e => {
+    const arrow = e.trend === 'up' ? '↑' : e.trend === 'down' ? '↓' : '→';
+    const fmt = (n) => (n > 0 ? `+${n}` : `${n}`);
+    const alertIcon = e.trend === 'down' ? '🔴' : e.trend === 'up' ? '🟢' : '🟡';
+    lines.push(`> ${alertIcon} ${arrow} **${e.brand}**（能見度 ${fmt(e.visibility_delta)}）— ${e.insight}`);
+  });
+  lines.push('');
+}
+
 const ob = d.own_brand_summary;
 if (ob) {
-  lines.push(`## 自有品牌現況 — ${ob.brand}`);
+  lines.push(`### 品牌現況 — ${ob.brand}`);
   const bi = ob.brand_intel || {};
   const sp = ob.search_presence || {};
   const dp = ob.domain_presence || {};
@@ -65,7 +83,7 @@ if (ob) {
   lines.push(`| AI 搜尋提及排名 | ${sp.brand_mention_ranking ?? '—'} |`);
   lines.push(`| 平均引用率 | ${dp.avg_citation_rate ?? '—'} |`);
   lines.push(`| 平均檢索率 | ${dp.avg_retrieval_rate ?? '—'} |`);
-  lines.push(`| 被引用網域 | ${(dp.own_domains_cited || []).join(', ') || '—'} |`);
+  lines.push(`| 被引用網域 | ${(dp.own_domains_cited || []).join('、') || '—'} |`);
   lines.push('');
   lines.push('> **脆弱度評分說明**');
   lines.push('> 公式：`(100 − 情感分數) ÷ 排名`，僅計算排名前 5 的品牌');
@@ -84,146 +102,39 @@ if (ob) {
   }
 }
 
-// ── Competitors Chart (rendered directly in html_email.js) ───────
+// ══════════════════════════════════════════════════════════════
+// 第二部分 · 對手漏洞掃描 (Vulnerability Radar)
+// 競品弱點掃描 — 依攻擊優先度排序
+// ══════════════════════════════════════════════════════════════
+lines.push('## 第二部分 · 對手漏洞掃描 (Vulnerability Radar)');
+lines.push('*競品弱點掃描 — 依攻擊優先度排序*');
+lines.push('');
+
 const competitors = allBrands.filter(b => !b.is_own);
 if (competitors.length > 0) {
-  lines.push('## 競品指標總覽');
+  lines.push('### 競品指標總覽');
   lines.push('<!-- COMPETITORS_CHART -->');
   lines.push('');
 }
 
-// ── Key Insights ──────────────────────────────────────────────
-lines.push('## 重點洞察');
-(d.key_insights || []).forEach(i => lines.push(`- ${i}`));
+lines.push('### 競爭態勢總覽');
+lines.push('<!-- RADAR_CHART -->');
+lines.push('<!-- COMPETITIVE_LANDSCAPE -->');
 lines.push('');
 
-// ── Insight Analysis ──────────────────────────────────────────
-if ((d.insight_analysis || []).length > 0) {
-  lines.push('## 洞察深度分析');
-  d.insight_analysis.forEach((item, idx) => {
-    lines.push(`### ${idx + 1}. ${item.insight}`);
-    lines.push(item.explanation);
-    lines.push('');
-  });
-}
-
-// ── Competitive Summary ───────────────────────────────────────
-lines.push('## 競爭態勢總覽');
 const cs = d.competitive_summary || {};
 
-if (cs.top_threat) {
-  const t = cs.top_threat;
-  lines.push(`### 首要威脅：${t.brand}`);
-  lines.push(`- **能見度：** ${t.visibility}`);
-  lines.push(`- **情感分數：** ${t.sentiment}`);
-  lines.push(`- **排名：** ${t.position}`);
-  lines.push(`- ${t.reason}`);
-  lines.push('');
-}
 
-if ((cs.attack_targets || []).length > 0) {
-  lines.push('### 攻擊目標');
-  cs.attack_targets.forEach(a => {
-    lines.push(`**${a.brand}**（脆弱度：${a.vulnerability_score}）`);
-    lines.push(`- 弱點：${a.weakness}`);
-    lines.push(`- 攻擊角度：${a.attack_angle}`);
-  });
-  lines.push('');
-}
-
-if ((cs.blue_ocean_brands || []).length > 0) {
-  lines.push('### 藍海機會');
-  cs.blue_ocean_brands.forEach(b => {
-    lines.push(`**${b.brand}** — 能見度：${b.visibility}`);
-    lines.push(`- ${b.reason}`);
-  });
-  lines.push('');
-}
-
-// ── Market Opportunities ──────────────────────────────────────
-lines.push('## 市場機會');
-(d.market_opportunities || []).forEach(o => {
-  const priority = (o.priority || '').toUpperCase();
-  lines.push(`### [${priority}] ${o.opportunity}`);
-  lines.push(`- **來源：** ${o.data_source}`);
-  lines.push(`- **行動：** ${o.action}`);
-});
+// ══════════════════════════════════════════════════════════════
+// 第三部分 · 實時執行矩陣 (Execution Matrix)
+// 完整閉環：監測 → 分析 → 指令 → 執行
+// ══════════════════════════════════════════════════════════════
+lines.push('## 第三部分 · 實時執行矩陣 (Execution Matrix)');
+lines.push('*完整閉環：監測 → 分析 → 指令 → 執行*');
 lines.push('');
 
-// ── Content Strategy ──────────────────────────────────────────
-lines.push('## 內容策略');
-const ct = d.content_strategy || {};
-
-if ((ct.top_platforms || []).length > 0) {
-  lines.push('### 優先佈局平台');
-  lines.push('| 網域 | 類型 | 引用率 | 重要原因 |');
-  lines.push('|------|------|--------|----------|');
-  ct.top_platforms.forEach(p => {
-    lines.push(`| ${p.domain} | ${p.classification} | ${p.citation_rate} | ${p.why} |`);
-  });
-  lines.push('');
-}
-
-if ((ct.own_brand_gaps_by_type || []).length > 0) {
-  lines.push('### 內容平台缺口分析');
-  ct.own_brand_gaps_by_type.forEach(g => {
-    const severity = (g.gap_severity || '').toUpperCase();
-    lines.push(`**[${severity}] ${g.type}**`);
-    lines.push(`- 平台：${(g.platforms || []).join('、')}`);
-    lines.push(`- 原因：${g.reason}`);
-  });
-  lines.push('');
-}
-
-if (ct.content_gaps) {
-  lines.push('### 整體缺口現況');
-  lines.push(ct.content_gaps);
-  lines.push('');
-}
-
-if ((ct.recommended_topics || []).length > 0) {
-  lines.push('### 建議內容主題');
-  ct.recommended_topics.forEach(t => lines.push(`- ${t}`));
-  lines.push('');
-}
-
-if ((ct.ugc_opportunities || []).length > 0) {
-  lines.push('### UGC 機會平台');
-  ct.ugc_opportunities.forEach(u => lines.push(`- ${u}`));
-  lines.push('');
-}
-
-// ── Copy Brief ────────────────────────────────────────────────
-lines.push('## 文案方向');
-const cb = d.copy_brief || {};
-
-if (cb.attack_copy) {
-  lines.push(`### 攻擊文案 — 目標品牌：${cb.attack_copy.target_brand}`);
-  lines.push(cb.attack_copy.angle);
-  lines.push('');
-}
-
-if (cb.awareness) {
-  lines.push('### 認知期');
-  lines.push(cb.awareness);
-  lines.push('');
-}
-
-if (cb.consideration) {
-  lines.push('### 考慮期');
-  lines.push(cb.consideration);
-  lines.push('');
-}
-
-if (cb.purchase) {
-  lines.push('### 購買期');
-  lines.push(cb.purchase);
-  lines.push('');
-}
-
-// ── Action Plan ───────────────────────────────────────────────
 if ((d.action_plan || []).length > 0) {
-  lines.push('## 行動計畫');
+  lines.push('### 執行指令');
   lines.push('| 優先級 | 時程 | 行動項目 | 執行理由 |');
   lines.push('|--------|------|----------|----------|');
   d.action_plan.forEach(a => {
@@ -233,14 +144,14 @@ if ((d.action_plan || []).length > 0) {
   lines.push('');
 }
 
-// ── Content Strategy Matrix ───────────────────────────────────
 if (strategyItems.length > 0) {
-  lines.push('## 內容策略執行矩陣');
-  strategyItems.forEach(item => {
+  lines.push('### 內容佈局指派');
+  strategyItems.forEach((item, idx) => {
+    if (idx > 0) lines.push('---');
     const s = item.json;
     const docUrl = `https://docs.google.com/document/d/${s.documentId}`;
     const priorityLabel = (s.priority || '').toUpperCase();
-    lines.push(`### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
+    lines.push(`#### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
     lines.push(`**格式：** ${s.content_format}`);
     lines.push(`**受眾：** ${s.audience}`);
     lines.push(`**內容簡報：** ${s.content_brief}`);
@@ -252,6 +163,9 @@ if (strategyItems.length > 0) {
     lines.push('');
   });
 }
+
+lines.push('---');
+lines.push('*本儀表板為動態文件。Peec AI 每 6 小時更新一次競爭信號。*');
 
 const markdown = lines.join('\n');
 

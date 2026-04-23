@@ -176,7 +176,7 @@ function mdToHtml(md) {
       const title = line.slice(2);
       body.push(`
 <div style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-radius:10px;padding:28px 32px;margin-bottom:24px;text-align:center">
-  <div style="color:#a0c4ff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Peec AI Intelligence</div>
+  <div style="color:#a0c4ff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Strategic War Room · Peec AI</div>
   <div style="color:#fff;font-size:22px;font-weight:700">${inline(title)}</div>
 </div>`);
       continue;
@@ -196,6 +196,13 @@ function mdToHtml(md) {
       continue;
     }
 
+    // H4 — sub-subsection (信號深度解析條目、內容佈局指派條目)
+    if (line.startsWith('#### ')) {
+      if (inList) { sectionBuffer.push('</ul>'); inList = false; }
+      sectionBuffer.push(`<h4 style="color:#34495e;font-size:13px;font-weight:700;margin:12px 0 4px;padding-left:10px;border-left:3px solid #a0c4ff">${headingWithBadge(line.slice(5))}</h4>`);
+      continue;
+    }
+
     // Blockquote — merge consecutive > lines into one callout box
     if (line.startsWith('> ')) {
       if (inList) { sectionBuffer.push('</ul>'); inList = false; }
@@ -211,7 +218,15 @@ function mdToHtml(md) {
     // List item
     if (line.startsWith('- ')) {
       if (!inList) { sectionBuffer.push('<ul style="margin:6px 0;padding-left:18px;color:#444">'); inList = true; }
-      sectionBuffer.push(`<li style="margin:5px 0;font-size:14px">${inline(line.slice(2))}</li>`);
+      const listContent = inline(line.slice(2));
+      // Highlight top-threat similarity explanation for faster scanning in email.
+      if (listContent.includes('<strong>相似性判斷：</strong>')) {
+        sectionBuffer.push(
+          `<li style="margin:6px 0;font-size:14px;list-style:none;padding:8px 10px;border-left:3px solid #3498db;background:#f4f9ff;border-radius:0 6px 6px 0">${listContent}</li>`
+        );
+      } else {
+        sectionBuffer.push(`<li style="margin:5px 0;font-size:14px">${listContent}</li>`);
+      }
       continue;
     }
 
