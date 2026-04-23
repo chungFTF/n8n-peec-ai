@@ -2,6 +2,8 @@
 
 This repository contains an n8n automation workflow that pulls daily AI visibility data from Peec AI, generates structured competitive insights, and outputs report-ready content (Markdown + HTML email) in both English and Chinese.
 
+Its core value is automated, competition-driven UGC copy generation: the pipeline detects where competitors are vulnerable, turns those signals into copy instructions, and produces channel-ready UGC messaging automatically.
+
 > Disclaimer: Brand names used in examples are for educational and research demonstration only. This project is not affiliated with or endorsed by those brands.
 
 ## Overview
@@ -14,6 +16,14 @@ The workflow is designed to run on a schedule and execute an end-to-end intellig
 4. Generate AI analysis output with a strict schema (top threat, attack targets, opportunities, content strategy, and action plan).
 5. Convert the output into Markdown and styled HTML for email delivery.
 6. Feed copy/content strategy outputs into downstream execution nodes.
+7. Automatically generate competitive UGC copy packages from strategy signals for faster campaign execution.
+
+## Why It Is Competitive
+
+- Automatically identifies today's top threat and attack targets from measurable market signals.
+- Converts competitive gaps into actionable copy angles and platform-specific instructions.
+- Generates UGC (sometimes written as UCG) copy outputs at scale without manual rewriting.
+- Keeps strategy and execution connected from intelligence data to final copy artifacts.
 
 ## Repository Structure
 
@@ -58,6 +68,8 @@ lang/zh/
 
 ## Key Metrics
 
+These metrics are not only for reporting. They directly drive how automated UGC copy priorities are selected.
+
 ### Vulnerability Score
 
 Used to identify competitors that are highly visible but weak in sentiment.
@@ -85,6 +97,8 @@ Typical interpretation logic:
 - Blue Ocean: low visibility and low saturation (white-space opportunity).
 - Stable: relatively defended position.
 
+In practice, these labels determine where the system should focus attack-oriented or defense-oriented UGC messaging.
+
 ## Data Sources (Peec AI MCP)
 
 Primary MCP functions used by the workflow:
@@ -93,6 +107,8 @@ Primary MCP functions used by the workflow:
 - `list_shopping_queries`: user purchase-intent query set.
 - `list_search_queries`: AI-generated search terms and mentioned brands.
 - `get_domain_report`: domain retrieval/citation behavior and gaps.
+
+Together, these four inputs power a closed loop: competitive intelligence -> strategic recommendation -> automated UGC copy generation.
 
 ## Setup
 
@@ -105,6 +121,8 @@ Primary MCP functions used by the workflow:
 4. Configure schedule trigger (for example daily run).
 5. Run a manual test once and confirm all branches return valid data.
 
+Tip: verify that copy-related nodes (`extract_copy_matrix`, `prepare_copy_agent_input`, `split_copy_outputs`) are active, because they are the core of the competitive UGC automation layer.
+
 ## Output
 
 Depending on language path and workflow branch, the system can output:
@@ -113,9 +131,11 @@ Depending on language path and workflow branch, the system can output:
 - Markdown report
 - Styled HTML email
 - Copy execution artifacts (matrix + split outputs + doc-linked payloads)
+- Automated competitive UGC copy packages for downstream publishing workflows
 
 ## Notes
 
 - English and Chinese pipelines are maintained separately under `lang/en` and `lang/zh`.
 - Top threat selection and competitive comparison logic are prompt-driven and schema-constrained.
 - Keep renderer files (`json_to_markdown*`, `html_email*`) aligned with prompt schema changes.
+- If you update threat logic or priority criteria, update copy-agent prompts as well to keep UGC output aligned with strategy.
