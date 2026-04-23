@@ -1,5 +1,7 @@
-const item = $input.all().find(i => i.json.markdown);
-const markdown = item?.json?.markdown;
+const items = $input.all();
+const markdownItem = items.find(i => i.json.markdown);
+
+const markdown = markdownItem?.json?.markdown;
 if (!markdown) throw new Error('No markdown found in input');
 
 function mdToHtml(md) {
@@ -8,22 +10,40 @@ function mdToHtml(md) {
   let inList = false;
   let inTable = false;
   let tableHeaders = [];
+  let isFirstDataRow = true;
   let sectionBuffer = [];
-  let currentSection = null;
+
+  const priorityMeta = { HIGH: '#e74c3c', MEDIUM: '#f39c12', LOW: '#27ae60' };
+
+  const badge = (level) => {
+    const color = priorityMeta[level] || '#888';
+    return `<span style="background:${color};color:#fff;font-size:11px;font-weight:bold;padding:2px 7px;border-radius:3px">${level}</span>`;
+  };
 
   const inline = (text) => text
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/\*(.+?)\*/g, '<em>$1</em>')
     .replace(/`(.+?)`/g, '<code style="background:#f0f0f0;padding:1px 4px;border-radius:3px;font-size:13px">$1</code>');
 
-  const priorityBadge = (text) => {
-    const match = text.match(/^\[(HIGH|MEDIUM|LOW)\]\s*/i);
-    if (!match) return inline(text);
-    const level = match[1].toUpperCase();
-    const colors = { HIGH: '#e74c3c', MEDIUM: '#f39c12', LOW: '#27ae60' };
-    const color = colors[level] || '#888';
-    const rest = text.slice(match[0].length);
-    return `<span style="background:${color};color:#fff;font-size:11px;font-weight:bold;padding:2px 7px;border-radius:3px;margin-right:8px">${level}</span>${inline(rest)}`;
+  // For H3 headings: [HIGH] / [MEDIUM] / [LOW] prefix becomes a badge
+  const headingWithBadge = (text) => {
+    const m = text.match(/^\[(HIGH|MEDIUM|LOW)\]\s*/i);
+    if (!m) return inline(text);
+    return `${badge(m[1].toUpperCase())} ${inline(text.slice(m[0].length))}`;
+  };
+
+  // For bold paragraphs like **[HIGH] UGC** — gap analysis labels
+  const boldPriorityLine = (text) => {
+    const m = text.match(/^\*\*\[(HIGH|MEDIUM|LOW)\]\s*(.+?)\*\*$/i);
+    if (!m) return null;
+    const color = priorityMeta[m[1].toUpperCase()] || '#888';
+    return `<div style="border-left:3px solid ${color};padding:6px 12px;margin:12px 0 4px;background:#fafafa;border-radius:0 6px 6px 0;font-size:13px;font-weight:700;color:${color}">${badge(m[1].toUpperCase())} ${m[2]}</div>`;
+  };
+
+  // For table cells: bare HIGH/MEDIUM/LOW → badge
+  const cellContent = (text) => {
+    const m = text.match(/^(HIGH|MEDIUM|LOW)$/i);
+    return m ? badge(m[1].toUpperCase()) : inline(text);
   };
 
   const flushSection = () => {
@@ -43,17 +63,19 @@ function mdToHtml(md) {
         if (inList) { sectionBuffer.push('</ul>'); inList = false; }
         sectionBuffer.push('<table style="border-collapse:collapse;width:100%;margin:10px 0;font-size:13px">');
         inTable = true;
+        isFirstDataRow = true;
       }
       if (line.match(/^\|[-| :]+\|$/)) continue;
       const cells = line.split('|').filter((_, i, a) => i > 0 && i < a.length - 1).map(c => c.trim());
-      if (tableHeaders.length === 0) {
+      if (isFirstDataRow) {
+        isFirstDataRow = false;
         tableHeaders = cells;
         sectionBuffer.push('<thead><tr>' + cells.map(c =>
           `<th style="border:1px solid #e0e0e0;padding:8px 10px;background:#f7f7f7;text-align:left;font-weight:600;color:#555">${inline(c)}</th>`
         ).join('') + '</tr></thead><tbody>');
       } else {
         sectionBuffer.push('<tr>' + cells.map((c, ci) =>
-          `<td style="border:1px solid #e0e0e0;padding:8px 10px;${ci === 0 ? 'font-weight:500' : ''}">${inline(c)}</td>`
+          `<td style="border:1px solid #e0e0e0;padding:8px 10px;${ci === 0 ? 'font-weight:500' : ''}">${cellContent(c)}</td>`
         ).join('') + '</tr>');
       }
       continue;
@@ -68,7 +90,7 @@ function mdToHtml(md) {
       continue;
     }
 
-    // H1 — email header (outside cards)
+    // H1 — email header banner
     if (line.startsWith('# ')) {
       flushSection();
       const title = line.slice(2);
@@ -80,24 +102,17 @@ function mdToHtml(md) {
       continue;
     }
 
-    // H2 — new card section
+    // H2 — new card
     if (line.startsWith('## ')) {
       flushSection();
-      const label = line.slice(3);
-      sectionBuffer.push(`<h2 style="color:#1a1a2e;font-size:16px;font-weight:700;margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid #f0f0f0">${inline(label)}</h2>`);
+      sectionBuffer.push(`<h2 style="color:#1a1a2e;font-size:16px;font-weight:700;margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid #f0f0f0">${inline(line.slice(3))}</h2>`);
       continue;
     }
 
-    // H3 — subsection inside card
+    // H3 — subsection (supports [HIGH/MEDIUM/LOW] badge)
     if (line.startsWith('### ')) {
       if (inList) { sectionBuffer.push('</ul>'); inList = false; }
-      const label = line.slice(4);
-      const isPriority = /^\[(HIGH|MEDIUM|LOW)\]/.test(label);
-      if (isPriority) {
-        sectionBuffer.push(`<div style="margin:10px 0 4px;font-size:14px;font-weight:600">${priorityBadge(label)}</div>`);
-      } else {
-        sectionBuffer.push(`<h3 style="color:#2c3e50;font-size:14px;font-weight:700;margin:14px 0 4px">${inline(label)}</h3>`);
-      }
+      sectionBuffer.push(`<h3 style="color:#2c3e50;font-size:14px;font-weight:700;margin:14px 0 4px">${headingWithBadge(line.slice(4))}</h3>`);
       continue;
     }
 
@@ -108,9 +123,14 @@ function mdToHtml(md) {
       continue;
     }
 
-    // Paragraph
+    // Bold priority line: **[HIGH] label** — gap analysis section
     if (inList) { sectionBuffer.push('</ul>'); inList = false; }
-    sectionBuffer.push(`<p style="margin:5px 0 8px;font-size:14px;color:#444">${inline(line)}</p>`);
+    const boldPriority = boldPriorityLine(line.trim());
+    if (boldPriority) {
+      sectionBuffer.push(boldPriority);
+    } else {
+      sectionBuffer.push(`<p style="margin:5px 0 8px;font-size:14px;color:#444">${inline(line)}</p>`);
+    }
   }
 
   if (inList) sectionBuffer.push('</ul>');
@@ -126,5 +146,4 @@ ${body.join('\n')}
 </div></body></html>`;
 }
 
-const emailHtml = mdToHtml(markdown);
-return [{ json: { html: emailHtml } }];
+return [{ json: { html: mdToHtml(markdown) } }];
