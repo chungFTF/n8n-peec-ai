@@ -1,6 +1,14 @@
 const items = $input.all();
 const results = [];
 
+// Sentiment range → tier
+function sentimentTier(sent) {
+  if (sent <= 44) return { label: 'bad',    weight: 3 };
+  if (sent <= 65) return { label: 'normal', weight: 2 };
+  return                  { label: 'good',  weight: 1 };
+}
+
+
 for (const item of items) {
   const rawData = item.json;
 
@@ -11,7 +19,7 @@ for (const item of items) {
   if (!content || !content.columns) continue;
 
   const columns = content.columns;
-  const rows = content.rows || [];
+  const rows    = content.rows || [];
 
   const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());
 
@@ -29,38 +37,43 @@ for (const item of items) {
   const brandAnalysis = rows.map(row => {
     const name     = row[idx.name];
     const isOwn    = idx.is_own !== -1 ? (row[idx.is_own] === true || row[idx.is_own] === 'true') : false;
-    const vis      = parseFloat(row[idx.visibility]) || 0;
-    const sent     = parseFloat(row[idx.sentiment]) || 0;
-    const pos      = parseFloat(row[idx.pos]) || 0;
-    const sov      = parseFloat(row[idx.sov]) || 0;
-    const visCount = parseFloat(row[idx.vis_count]) || 0;
-    const visTotal = parseFloat(row[idx.vis_total]) || 1;
+    const vis      = parseFloat(row[idx.visibility])  || 0;
+    const sent     = parseFloat(row[idx.sentiment])   || 0;
+    const pos      = parseFloat(row[idx.pos])         || 0;
+    const sov      = parseFloat(row[idx.sov])         || 0;
+    const visCount = parseFloat(row[idx.vis_count])   || 0;
+    const visTotal = parseFloat(row[idx.vis_total])   || 1;
 
-    const vulnerabilityIndex = (pos > 0 && pos <= 5) ? ((100 - sent) / pos).toFixed(2) : 0;
-    const saturation = ((visCount / visTotal) * 100).toFixed(1);
+    const tier               = sentimentTier(sent);
+    const vulnerabilityScore = pos > 0 && pos <= 5
+      ? parseFloat(((100 - sent) / pos).toFixed(2))
+      : 0;
+    const saturation         = parseFloat(((visCount / visTotal) * 100).toFixed(1));
 
+    // Status classification
     let status = 'Stable';
     let tacticalAdvice = 'Maintain authority.';
 
-    if (sent > 0 && sent < 65 && pos <= 5) {
+    if (tier.label === 'bad' && pos > 0 && pos <= 5) {
       status = 'Vulnerable (Target for Attack)';
-      tacticalAdvice = `HIGH PRIORITY: ${name} is visible but poorly rated.`;
-    } else if (vis < 0.3 && parseFloat(saturation) < 20) {
+      tacticalAdvice = `HIGH PRIORITY: ${name} is visible but has poor sentiment (${sent}).`;
+    } else if (vis < 0.3 && saturation < 20) {
       status = 'Blue Ocean';
-      tacticalAdvice = `OPPORTUNITY: Low competition.`;
+      tacticalAdvice = `OPPORTUNITY: Low visibility and low saturation — untapped market.`;
     }
 
     return {
-      brand: name,
-      is_own: isOwn,
-      visibility: vis,
-      sentiment: sent,
-      position: pos,
-      sov: sov,
-      saturation: parseFloat(saturation),
-      market_status: status,
-      tactical_advice: tacticalAdvice,
-      vulnerability_score: parseFloat(vulnerabilityIndex),
+      brand:              name,
+      is_own:             isOwn,
+      visibility:         vis,
+      sentiment:          sent,
+      sentiment_tier:     tier.label,
+      position:           pos,
+      sov:                sov,
+      saturation:         saturation,
+      market_status:      status,
+      tactical_advice:    tacticalAdvice,
+      vulnerability_score: vulnerabilityScore,
     };
   });
 
@@ -68,10 +81,10 @@ for (const item of items) {
 
   results.push({
     json: {
-      source: 'get_brand_report',
+      source:           'get_brand_report',
       detailed_analysis: brandAnalysis,
       opportunity_count: opportunities.length,
-      timestamp: new Date().toISOString(),
+      timestamp:         new Date().toISOString(),
     }
   });
 }
