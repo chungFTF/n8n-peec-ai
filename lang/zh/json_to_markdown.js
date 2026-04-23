@@ -1,15 +1,42 @@
-const raw = $input.first().json;
+const allItems = $input.all();
+
+// AI Agent output — first item with an `output` field
+const agentItem = allItems.find(i => i.json.output !== undefined) || allItems[0];
+const raw = agentItem.json;
 
 // Parse JSON from AI Agent output (handles string or object)
+function extractJSON(str) {
+  const start = str.search(/[{[]/);
+  if (start === -1) return str;
+  let depth = 0, inString = false, escape = false;
+  for (let i = start; i < str.length; i++) {
+    const ch = str[i];
+    if (escape) { escape = false; continue; }
+    if (ch === '\\' && inString) { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{' || ch === '[') depth++;
+    if (ch === '}' || ch === ']') { depth--; if (depth === 0) return str.slice(start, i + 1); }
+  }
+  return str.slice(start);
+}
+
 let data;
 if (typeof raw.output === 'string') {
-  const cleaned = raw.output.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-  data = JSON.parse(cleaned);
-} else if (typeof raw.output === 'object') {
+  const stripped = raw.output.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+  data = JSON.parse(extractJSON(stripped));
+} else if (typeof raw.output === 'object' && raw.output !== null) {
   data = raw.output;
 } else {
   data = raw;
 }
+
+// Brand report from clean_brand_report.js (passed via Merge node)
+const brandReportItem = allItems.find(i => i.json.source === 'get_brand_report');
+const allBrands = brandReportItem?.json?.detailed_analysis || [];
+
+// Content strategy matrix items from combine_strategy_with_docs.js
+const strategyItems = allItems.filter(i => i.json.documentId && i.json.content_format);
 
 const d = data;
 const date = d.report_date || new Date().toISOString().slice(0, 10);
@@ -40,6 +67,11 @@ if (ob) {
   lines.push(`| 平均檢索率 | ${dp.avg_retrieval_rate ?? '—'} |`);
   lines.push(`| 被引用網域 | ${(dp.own_domains_cited || []).join(', ') || '—'} |`);
   lines.push('');
+  lines.push('> **脆弱度評分說明**');
+  lines.push('> 公式：`(100 − 情感分數) ÷ 排名`，僅計算排名前 5 的品牌');
+  lines.push('> 分數越高 → 該品牌越顯眼但口碑越差 → 越值得攻擊');
+  lines.push('> 情感分級：0–44 差　45–65 普通　66–100 良好');
+  lines.push('');
 
   if ((sp.unique_keywords || []).length > 0) {
     lines.push(`**相關關鍵字：** ${sp.unique_keywords.join('、')}`);
@@ -50,6 +82,14 @@ if (ob) {
     lines.push(ob.raw_summary);
     lines.push('');
   }
+}
+
+// ── Competitors Chart (rendered directly in html_email.js) ───────
+const competitors = allBrands.filter(b => !b.is_own);
+if (competitors.length > 0) {
+  lines.push('## 競品指標總覽');
+  lines.push('<!-- COMPETITORS_CHART -->');
+  lines.push('');
 }
 
 // ── Key Insights ──────────────────────────────────────────────
@@ -193,9 +233,29 @@ if ((d.action_plan || []).length > 0) {
   lines.push('');
 }
 
+// ── Content Strategy Matrix ───────────────────────────────────
+if (strategyItems.length > 0) {
+  lines.push('## 內容策略執行矩陣');
+  strategyItems.forEach(item => {
+    const s = item.json;
+    const docUrl = `https://docs.google.com/document/d/${s.documentId}`;
+    const priorityLabel = (s.priority || '').toUpperCase();
+    lines.push(`### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
+    lines.push(`**格式：** ${s.content_format}`);
+    lines.push(`**受眾：** ${s.audience}`);
+    lines.push(`**內容簡報：** ${s.content_brief}`);
+    lines.push(`**文案角度：** ${s.copy_angle}`);
+    if (s.reference_insight) lines.push(`**參考洞察：** ${s.reference_insight}`);
+    lines.push(`**執行依據：** ${s.reason}`);
+    lines.push(`**時程：** ${s.timeframe}`);
+    lines.push(`**文件：** [開啟 Google Doc](${docUrl})`);
+    lines.push('');
+  });
+}
+
 const markdown = lines.join('\n');
 
 return [
-  { json: { ...data } },
+  { json: { ...data, allBrands } },
   { json: { markdown } },
 ];

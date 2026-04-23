@@ -3,10 +3,27 @@
 您的任務是分析所提供的競爭情報資料集，並生成結構化的策略報告。
 
 資料集包含以下四個區塊：
-- brand_intel：各競爭品牌的能見度、情感分析、排名、聲量佔比與市場狀態
+- brand_intel：各競爭品牌的能見度、情感分析、排名、聲量佔比與市場狀態。每個品牌包含 sentiment_tier（bad / normal / good）與 vulnerability_score（見下方公式說明）。
 - shopping_queries：正在追蹤的購買意圖查詢、搜尋量與意圖分類
 - search_queries：AI 引擎在回答提示時實際生成的搜尋詞，包含其提及的品牌。請使用 brand_mention_ranking 和 unique_keywords 找出哪些品牌主導 AI 搜尋，以及哪些主題正在驅動能見度。
-- domain_report：被 AI 引擎引用的網域，按類型分類（EDITORIAL、UGC、COMPETITOR、OWN 等），含檢索率與引用率
+- domain_report：被 AI 引擎引用的網域，按類型分類（EDITORIAL、UGC、COMPETITOR、OWN 等），含檢索率、引用率與 gap_score。domain_investment_suggestion 為依 gap_score 排序的投資優先域名清單。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+vulnerability_score 公式說明
+━━━━━━━━━━━━━━━━━━━━━━━━━
+公式：vulnerability_score = (100 − sentiment) / position
+適用條件：position 介於 1–5 之間（排名在前 5 才有攻擊價值）；否則為 0。
+
+意涵：
+- sentiment 越低（品牌口碑越差）→ 分子越大 → 分數越高
+- position 越小（排名越前、越顯眼）→ 分母越小 → 分數越高
+- 因此分數越高，代表「此品牌曝光顯著但評價差」，是自有品牌最值得攻擊的目標
+
+sentiment_tier 輔助判讀（不影響分數計算，僅用於語意標注）：
+- bad（0–44）：口碑明顯不佳
+- normal（45–65）：口碑普通
+- good（66–100）：口碑良好
+━━━━━━━━━━━━━━━━━━━━━━━━━
 
 注意事項：
 - 僅使用資料集中明確存在的資訊。
@@ -16,6 +33,8 @@
 - 自有品牌：brand_intel 中 is_own=true 的品牌為您的客戶品牌。絕對不可將其列入 top_threat、attack_targets 或 copy_brief 的 attack_copy。所有分析均應站在此品牌的視角出發，而非針對它。
 - attack_targets：僅選擇 market_status 為「Stable」且 vulnerability_score 最高的競爭品牌（is_own=false）。market_status 為「Blue Ocean」的品牌絕對不可列為攻擊目標——這些品牌僅屬於 blue_ocean_brands。
 - search_queries：使用 brand_mention_ranking 找出哪些競爭對手主導 AI 生成的搜尋結果。使用 unique_keywords 挖掘值得鎖定的內容主題。
+- sentiment_tier：解讀 attack_targets 的弱點時，請一併參考 sentiment_tier 標注（bad / normal / good），讓說明更具語意清晰度。
+- domain_investment_suggestion：來自 domain_report，依 gap_score（= citation_rate × retrieval_rate）排序，代表自有品牌應優先投入的平台。請在 content_strategy 的 own_brand_gaps_by_type 中參考此清單。
 - 語言：所有文字描述欄位（reason、weakness、angle、why、opportunity、action、awareness、consideration、purchase、raw_summary、content_gaps 等）必須以繁體中文回答。
 
 輸入資料：
