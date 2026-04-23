@@ -43,13 +43,31 @@ const date = d.report_date || new Date().toISOString().slice(0, 10);
 
 const lines = [];
 
-lines.push(`# Competitive Intelligence Report — ${date}`);
+// ── Header ────────────────────────────────────────────────────
+lines.push(`# Strategic Conquest Dashboard — ${date}`);
 lines.push('');
 
-// ── Own Brand Summary ─────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+// PART 1 · Battlefield Alert
+// Lead with real-time sentiment & visibility signals (defensive radar)
+// ══════════════════════════════════════════════════════════════
+lines.push('## PART 1 · Battlefield Alert');
+lines.push('*Brand Asset Erosion Warning — real-time signals from the AI battlefield*');
+lines.push('');
+
+if ((d.evolution_highlights || []).length > 0) {
+  d.evolution_highlights.forEach(e => {
+    const arrow = e.trend === 'up' ? '↑' : e.trend === 'down' ? '↓' : '→';
+    const fmt = (n) => (n > 0 ? `+${n}` : `${n}`);
+    const alertIcon = e.trend === 'down' ? '🔴' : e.trend === 'up' ? '🟢' : '🟡';
+    lines.push(`> ${alertIcon} ${arrow} **${e.brand}** (Visibility ${fmt(e.visibility_delta)}) — ${e.insight}`);
+  });
+  lines.push('');
+}
+
 const ob = d.own_brand_summary;
 if (ob) {
-  lines.push(`## Own Brand Overview — ${ob.brand}`);
+  lines.push(`### Brand Status — ${ob.brand}`);
   const bi = ob.brand_intel || {};
   const sp = ob.search_presence || {};
   const dp = ob.domain_presence || {};
@@ -84,146 +102,39 @@ if (ob) {
   }
 }
 
-// ── Competitors Chart (rendered directly in html_email.js) ───────
+// ══════════════════════════════════════════════════════════════
+// PART 2 · Vulnerability Radar
+// Competitor weakness scan — ranked by attack priority
+// ══════════════════════════════════════════════════════════════
+lines.push('## PART 2 · Vulnerability Radar');
+lines.push('*Competitor weakness scan — ranked by attack priority*');
+lines.push('');
+
 const competitors = allBrands.filter(b => !b.is_own);
 if (competitors.length > 0) {
-  lines.push('## Competitor Metrics Overview');
+  lines.push('### Competitor Metrics & Daily Evolution');
   lines.push('<!-- COMPETITORS_CHART -->');
   lines.push('');
 }
 
-// ── Key Insights ──────────────────────────────────────────────
-lines.push('## Key Insights');
-(d.key_insights || []).forEach(i => lines.push(`- ${i}`));
+lines.push('### Competitive Landscape Overview');
+lines.push('<!-- RADAR_CHART -->');
+lines.push('<!-- COMPETITIVE_LANDSCAPE -->');
 lines.push('');
 
-// ── Insight Analysis ──────────────────────────────────────────
-if ((d.insight_analysis || []).length > 0) {
-  lines.push('## Insight Deep Dive');
-  d.insight_analysis.forEach((item, idx) => {
-    lines.push(`### ${idx + 1}. ${item.insight}`);
-    lines.push(item.explanation);
-    lines.push('');
-  });
-}
-
-// ── Competitive Summary ───────────────────────────────────────
-lines.push('## Competitive Landscape Overview');
 const cs = d.competitive_summary || {};
 
-if (cs.top_threat) {
-  const t = cs.top_threat;
-  lines.push(`### Top Threat: ${t.brand}`);
-  lines.push(`- **Visibility:** ${t.visibility}`);
-  lines.push(`- **Sentiment Score:** ${t.sentiment}`);
-  lines.push(`- **Position:** ${t.position}`);
-  lines.push(`- ${t.reason}`);
-  lines.push('');
-}
 
-if ((cs.attack_targets || []).length > 0) {
-  lines.push('### Attack Targets');
-  cs.attack_targets.forEach(a => {
-    lines.push(`**${a.brand}** (Vulnerability: ${a.vulnerability_score})`);
-    lines.push(`- Weakness: ${a.weakness}`);
-    lines.push(`- Attack Angle: ${a.attack_angle}`);
-  });
-  lines.push('');
-}
-
-if ((cs.blue_ocean_brands || []).length > 0) {
-  lines.push('### Blue Ocean Opportunities');
-  cs.blue_ocean_brands.forEach(b => {
-    lines.push(`**${b.brand}** — Visibility: ${b.visibility}`);
-    lines.push(`- ${b.reason}`);
-  });
-  lines.push('');
-}
-
-// ── Market Opportunities ──────────────────────────────────────
-lines.push('## Market Opportunities');
-(d.market_opportunities || []).forEach(o => {
-  const priority = (o.priority || '').toUpperCase();
-  lines.push(`### [${priority}] ${o.opportunity}`);
-  lines.push(`- **Source:** ${o.data_source}`);
-  lines.push(`- **Action:** ${o.action}`);
-});
+// ══════════════════════════════════════════════════════════════
+// PART 3 · Execution Matrix (Live)
+// Closed loop: Monitor → Analyze → Direct → Execute
+// ══════════════════════════════════════════════════════════════
+lines.push('## PART 3 · Execution Matrix (Live)');
+lines.push('*Closed loop: Monitor → Analyze → Direct → Execute*');
 lines.push('');
 
-// ── Content Strategy ──────────────────────────────────────────
-lines.push('## Content Strategy');
-const ct = d.content_strategy || {};
-
-if ((ct.top_platforms || []).length > 0) {
-  lines.push('### Priority Platforms');
-  lines.push('| Domain | Type | Citation Rate | Why It Matters |');
-  lines.push('|--------|------|---------------|----------------|');
-  ct.top_platforms.forEach(p => {
-    lines.push(`| ${p.domain} | ${p.classification} | ${p.citation_rate} | ${p.why} |`);
-  });
-  lines.push('');
-}
-
-if ((ct.own_brand_gaps_by_type || []).length > 0) {
-  lines.push('### Content Platform Gap Analysis');
-  ct.own_brand_gaps_by_type.forEach(g => {
-    const severity = (g.gap_severity || '').toUpperCase();
-    lines.push(`**[${severity}] ${g.type}**`);
-    lines.push(`- Platforms: ${(g.platforms || []).join(', ')}`);
-    lines.push(`- Reason: ${g.reason}`);
-  });
-  lines.push('');
-}
-
-if (ct.content_gaps) {
-  lines.push('### Overall Gap Status');
-  lines.push(ct.content_gaps);
-  lines.push('');
-}
-
-if ((ct.recommended_topics || []).length > 0) {
-  lines.push('### Recommended Topics');
-  ct.recommended_topics.forEach(t => lines.push(`- ${t}`));
-  lines.push('');
-}
-
-if ((ct.ugc_opportunities || []).length > 0) {
-  lines.push('### UGC Opportunity Platforms');
-  ct.ugc_opportunities.forEach(u => lines.push(`- ${u}`));
-  lines.push('');
-}
-
-// ── Copy Brief ────────────────────────────────────────────────
-lines.push('## Copy Direction');
-const cb = d.copy_brief || {};
-
-if (cb.attack_copy) {
-  lines.push(`### Attack Copy — Target Brand: ${cb.attack_copy.target_brand}`);
-  lines.push(cb.attack_copy.angle);
-  lines.push('');
-}
-
-if (cb.awareness) {
-  lines.push('### Awareness');
-  lines.push(cb.awareness);
-  lines.push('');
-}
-
-if (cb.consideration) {
-  lines.push('### Consideration');
-  lines.push(cb.consideration);
-  lines.push('');
-}
-
-if (cb.purchase) {
-  lines.push('### Purchase');
-  lines.push(cb.purchase);
-  lines.push('');
-}
-
-// ── Action Plan ───────────────────────────────────────────────
 if ((d.action_plan || []).length > 0) {
-  lines.push('## Action Plan');
+  lines.push('### Action Commands');
   lines.push('| Priority | Timeframe | Action Item | Rationale |');
   lines.push('|----------|-----------|-------------|-----------|');
   d.action_plan.forEach(a => {
@@ -233,26 +144,25 @@ if ((d.action_plan || []).length > 0) {
   lines.push('');
 }
 
-// ── Content Strategy Matrix ───────────────────────────────────
 if (strategyItems.length > 0) {
-  lines.push('## Content Strategy Execution Matrix');
+  lines.push('### Content Deployment Briefs');
   strategyItems.forEach((item, idx) => {
     if (idx > 0) lines.push('---');
     const s = item.json;
     const docUrl = `https://docs.google.com/document/d/${s.documentId}`;
     const priorityLabel = (s.priority || '').toUpperCase();
-    lines.push(`### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
+    lines.push(`#### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
     lines.push(`**Format:** ${s.content_format}`);
     lines.push(`**Audience:** ${s.audience}`);
     lines.push(`**Content Brief:** ${s.content_brief}`);
-    lines.push(`**Copy Angle:** ${s.copy_angle}`);
     if (s.reference_insight) lines.push(`**Reference Insight:** ${s.reference_insight}`);
-    lines.push(`**Rationale:** ${s.reason}`);
-    lines.push(`**Timeframe:** ${s.timeframe}`);
     lines.push(`**Document:** [Open Google Doc](${docUrl})`);
     lines.push('');
   });
 }
+
+lines.push('---');
+lines.push('*This dashboard is a living document. Peec AI refreshes competitive signals every 6 hours.*');
 
 const markdown = lines.join('\n');
 
