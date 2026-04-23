@@ -31,29 +31,38 @@ if (typeof raw.output === 'string') {
   data = raw;
 }
 
+// Look up copy_instruction_matrix for rationale + timeframe enrichment
+const matrixItem = allItems.find(i => i.json.copy_instruction_matrix);
+const matrix = matrixItem?.json?.copy_instruction_matrix || [];
+const matrixByPlatform = {};
+matrix.forEach(m => { matrixByPlatform[m.platform] = m; });
+
 const items = data.copy_outputs || [];
 
 return items.map(item => {
-  const hooksText = (item.hooks || []).map((h, i) => `Hook ${i + 1}：${h}`).join('\n');
+  const mx = matrixByPlatform[item.platform] || {};
+  const hooksText = (item.hooks || []).map((h, i) => `Hook ${i + 1}: ${h}`).join('\n');
 
-  const docTitle = `[${item.platform}] ${item.copy_angle} ${item.headline}`;
+  const docTitle = `[${item.platform}] ${item.copy_angle} — ${item.headline}`;
 
   const docContent = [
-    `平台：${item.platform}`,
-    `優先級：${item.priority}`,
-    `文案角度：${item.copy_angle}`,
+    `Platform: ${item.platform}`,
+    `Priority: ${item.priority}`,
+    `Copy Angle: ${item.copy_angle}`,
+    mx.timeframe ? `Timeframe: ${mx.timeframe}` : '',
     '',
-    `標題：${item.headline}`,
-    `副標題：${item.subheadline}`,
+    `Headline: ${item.headline}`,
+    `Subheadline: ${item.subheadline}`,
     '',
-    '內文：',
+    'Body:',
     item.body,
     '',
-    'Hooks：',
+    'Hooks:',
     hooksText,
     '',
-    `CTA：${item.cta}`,
-  ].join('\n');
+    `CTA: ${item.cta}`,
+    mx.reason ? `\nRationale: ${mx.reason}` : '',
+  ].filter(line => line !== undefined).join('\n');
 
   return {
     json: {
