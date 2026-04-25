@@ -16,7 +16,7 @@ return copyItems.map((copyItem, idx) => {
       content:    copyItem.json.content,
       platform:   copyItem.json.platform,
       priority:   copyItem.json.priority,
-      copy_angle: copyItem.json.copy_angle,
+      copy_direction: copyItem.json.copy_direction,
     },
   };
 });

@@ -20,7 +20,7 @@ return matrix.map((strategy, idx) => {
       content_format:   strategy.content_format,
       audience:         strategy.audience,
       content_brief:    strategy.content_brief,
-      copy_angle:       strategy.copy_angle,
+      copy_direction:   strategy.copy_direction,
       reference_insight: strategy.reference_insight,
       reason:           strategy.reason,
       priority:         strategy.priority,

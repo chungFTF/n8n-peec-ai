@@ -36,7 +36,7 @@ const brandReportItem = allItems.find(i => i.json.source === 'get_brand_report')
 const allBrands = brandReportItem?.json?.detailed_analysis || [];
 
 // Content strategy matrix items from combine_strategy_with_docs.js
-const strategyItems = allItems.filter(i => i.json.documentId && i.json.content_format);
+const strategyItems = allItems.filter(i => i.json.documentId && i.json.copy_direction);
 
 const d = data;
 const date = d.report_date || new Date().toISOString().slice(0, 10);
@@ -48,65 +48,32 @@ lines.push(`# Strategic Conquest Dashboard — ${date}`);
 lines.push('');
 
 // ══════════════════════════════════════════════════════════════
-// PART 1 · Battlefield Alert
+// 1. DETECT — Brand Status
+// Own-brand AI presence metrics
+// ══════════════════════════════════════════════════════════════
+lines.push('## 1. DETECT — Brand Status');
+lines.push('*Own-brand AI presence — real-time signal snapshot*');
+lines.push('');
+
+lines.push('<!-- DETECT_SCORECARD -->');
+lines.push('');
+
+// ══════════════════════════════════════════════════════════════
+// 2. DEFENSE — Battlefield Alert
 // Lead with real-time sentiment & visibility signals (defensive radar)
 // ══════════════════════════════════════════════════════════════
-lines.push('## PART 1 · Battlefield Alert');
+lines.push('## 2. DEFENSE — Battlefield Alert');
 lines.push('*Brand Asset Erosion Warning — real-time signals from the AI battlefield*');
 lines.push('');
 
-if ((d.evolution_highlights || []).length > 0) {
-  d.evolution_highlights.forEach(e => {
-    const arrow = e.trend === 'up' ? '↑' : e.trend === 'down' ? '↓' : '→';
-    const fmt = (n) => (n > 0 ? `+${n}` : `${n}`);
-    const alertIcon = e.trend === 'down' ? '🔴' : e.trend === 'up' ? '🟢' : '🟡';
-    lines.push(`> ${alertIcon} ${arrow} **${e.brand}** (Visibility ${fmt(e.visibility_delta)}) — ${e.insight}`);
-  });
-  lines.push('');
-}
-
-const ob = d.own_brand_summary;
-if (ob) {
-  lines.push(`### Brand Status — ${ob.brand}`);
-  const bi = ob.brand_intel || {};
-  const sp = ob.search_presence || {};
-  const dp = ob.domain_presence || {};
-
-  lines.push('| Metric | Value |');
-  lines.push('|--------|-------|');
-  lines.push(`| Visibility | ${bi.visibility ?? '—'} |`);
-  lines.push(`| Sentiment Score | ${bi.sentiment ?? '—'} |`);
-  lines.push(`| Position | ${bi.position ?? '—'} |`);
-  lines.push(`| Share of Voice (SoV) | ${bi.share_of_voice ?? '—'} |`);
-  lines.push(`| Market Status | ${bi.market_status ?? '—'} |`);
-  lines.push(`| Vulnerability Score | ${bi.vulnerability_score ?? '—'} |`);
-  lines.push(`| AI Search Mention Ranking | ${sp.brand_mention_ranking ?? '—'} |`);
-  lines.push(`| Avg. Citation Rate | ${dp.avg_citation_rate ?? '—'} |`);
-  lines.push(`| Avg. Retrieval Rate | ${dp.avg_retrieval_rate ?? '—'} |`);
-  lines.push(`| Cited Domains | ${(dp.own_domains_cited || []).join(', ') || '—'} |`);
-  lines.push('');
-  lines.push('> **Vulnerability Score Explained**');
-  lines.push('> Formula: `(100 − Sentiment Score) ÷ Position` — calculated for top-5 ranked brands only');
-  lines.push('> Higher score = more visible but poorer reputation = higher attack priority');
-  lines.push('> Sentiment tiers: 0–44 Poor  45–65 Fair  66–100 Good');
-  lines.push('');
-
-  if ((sp.unique_keywords || []).length > 0) {
-    lines.push(`**Related Keywords:** ${sp.unique_keywords.join(', ')}`);
-    lines.push('');
-  }
-
-  if (ob.raw_summary) {
-    lines.push(ob.raw_summary);
-    lines.push('');
-  }
-}
+lines.push('<!-- DEFENSE_ALERTS -->');
+lines.push('');
 
 // ══════════════════════════════════════════════════════════════
-// PART 2 · Vulnerability Radar
+// 3. DIAGNOSE — Vulnerability Radar
 // Competitor weakness scan — ranked by attack priority
 // ══════════════════════════════════════════════════════════════
-lines.push('## PART 2 · Vulnerability Radar');
+lines.push('## 3. DIAGNOSE — Vulnerability Radar');
 lines.push('*Competitor weakness scan — ranked by attack priority*');
 lines.push('');
 
@@ -124,13 +91,12 @@ lines.push('');
 
 const cs = d.competitive_summary || {};
 
-
 // ══════════════════════════════════════════════════════════════
-// PART 3 · Execution Matrix (Live)
-// Closed loop: Monitor → Analyze → Direct → Execute
+// 4. DOMINATE — Action Plan
+// Strategic moves to capture market territory
 // ══════════════════════════════════════════════════════════════
-lines.push('## PART 3 · Execution Matrix (Live)');
-lines.push('*Closed loop: Monitor → Analyze → Direct → Execute*');
+lines.push('## 4. DOMINATE — Action Plan');
+lines.push('*Strategic moves to capture market territory*');
 lines.push('');
 
 if ((d.action_plan || []).length > 0) {
@@ -144,6 +110,14 @@ if ((d.action_plan || []).length > 0) {
   lines.push('');
 }
 
+// ══════════════════════════════════════════════════════════════
+// 5. DIRECT & DRIVE — Content Deployment
+// Closed loop: Monitor → Analyze → Direct → Execute
+// ══════════════════════════════════════════════════════════════
+lines.push('## 5. DIRECT & DRIVE — Content Deployment');
+lines.push('*Closed loop: Monitor → Analyze → Direct → Execute*');
+lines.push('');
+
 if (strategyItems.length > 0) {
   lines.push('### Content Deployment Briefs');
   strategyItems.forEach((item, idx) => {
@@ -152,7 +126,9 @@ if (strategyItems.length > 0) {
     const docUrl = `https://docs.google.com/document/d/${s.documentId}`;
     const priorityLabel = (s.priority || '').toUpperCase();
     lines.push(`#### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
-    lines.push(`**Format:** ${s.content_format}`);
+    if (s.five_d) lines.push(`**[5D: ${s.five_d}]**`);
+    if (s.psychology || s.elm_path) lines.push(`**[PSYCHOLOGY: ${s.psychology || s.elm_path}]**`);
+    lines.push(`**Copy Direction:** ${s.copy_direction}`);
     lines.push(`**Audience:** ${s.audience}`);
     lines.push(`**Content Brief:** ${s.content_brief}`);
     if (s.reference_insight) lines.push(`**Reference Insight:** ${s.reference_insight}`);

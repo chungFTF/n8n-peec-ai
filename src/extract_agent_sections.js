@@ -30,6 +30,10 @@ if (typeof raw.output === 'string') {
 return [{
   json: {
     report_date:          data.report_date,
+    own_brand_summary:    data.own_brand_summary    || {},
+    defense_alert:        data.defense_alert        || {},
+    competitive_summary:  data.competitive_summary  || {},
+    dominate_plan:        data.dominate_plan        || [],
     action_plan:          data.action_plan          || [],
     market_opportunities: data.market_opportunities || [],
     content_strategy:     data.content_strategy     || {},

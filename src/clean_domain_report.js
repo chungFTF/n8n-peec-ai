@@ -14,12 +14,12 @@ function parseDomainData(item) {
   const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());
 
   const idx = {
-    domain:              findIdx('domain'),
-    classification:      findIdx('classification'),
-    retrieved_pct:       findIdx('retrieved_percentage'),
-    retrieval_rate:      findIdx('retrieval_rate'),
-    citation_rate:       findIdx('citation_rate'),
-    mentioned_brand_ids: findIdx('mentioned_brand_ids'),
+    domain:               findIdx('domain'),
+    classification:       findIdx('classification'),
+    retrieved_percentage: findIdx('retrieved_percentage'),
+    retrieval_rate:       findIdx('retrieval_rate'),
+    citation_rate:        findIdx('citation_rate'),
+    mentioned_brand_ids:  findIdx('mentioned_brand_ids'),
   };
 
   return rows.map(row => ({
@@ -36,12 +36,6 @@ function parseDomainData(item) {
 const todayDomains     = items[0] ? parseDomainData(items[0]) : [];
 const yesterdayDomains = items[1] ? parseDomainData(items[1]) : [];
 
-// 若昨天資料解析失敗（API 回傳錯誤訊息），輸出警告但繼續執行
-const hasYesterdayData = yesterdayDomains.length > 0;
-if (items[1] && !hasYesterdayData) {
-  console.warn('[clean_domain_report] yesterday data missing or error — delta will be null. Check get_domain_report_yesterday node.');
-}
-
 // Build yesterday lookup map
 const yesterdayMap = {};
 for (const d of yesterdayDomains) {
@@ -53,8 +47,10 @@ const TREND_THRESHOLD = 0.05;
 
 const domainsWithDelta = todayDomains.map(d => {
   const prev = yesterdayMap[d.domain];
-  const citation_rate_delta  = prev != null ? +(d.citation_rate  - prev.citation_rate).toFixed(4)  : null;
-  const retrieval_rate_delta = prev != null ? +(d.retrieval_rate - prev.retrieval_rate).toFixed(4) : null;
+  // Only compute delta when yesterday had actual data (non-zero citation rate)
+  const prevHasData = prev != null && prev.citation_rate > 0;
+  const citation_rate_delta  = prevHasData ? +(d.citation_rate  - prev.citation_rate).toFixed(4)  : null;
+  const retrieval_rate_delta = prevHasData ? +(d.retrieval_rate - prev.retrieval_rate).toFixed(4) : null;
 
   let domain_trend = 'stable';
   if (citation_rate_delta !== null) {

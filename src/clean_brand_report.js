@@ -20,20 +20,20 @@ function extractContent(rawData) {
 function buildIdx(columns) {
   const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());
   return {
-    name:      findIdx('brand_name'),
+    id:         findIdx('brand_id'),
+    name:       findIdx('brand_name'),
     visibility: findIdx('visibility'),
     vis_count:  findIdx('visibility_count'),
     vis_total:  findIdx('visibility_total'),
     sov:        findIdx('share_of_voice'),
     sentiment:  findIdx('sentiment'),
     pos:        findIdx('position'),
-    is_own:     findIdx('is_own'),
   };
 }
 
 function parseBrandRow(row, idx) {
   const name     = row[idx.name];
-  const isOwn    = idx.is_own !== -1 ? (row[idx.is_own] === true || row[idx.is_own] === 'true') : false;
+  const brandId  = idx.id !== -1 ? row[idx.id] : null;
   const vis      = parseFloat(row[idx.visibility]) || 0;
   const sent     = parseFloat(row[idx.sentiment])  || 0;
   const pos      = parseFloat(row[idx.pos])        || 0;
@@ -57,12 +57,32 @@ function parseBrandRow(row, idx) {
     tacticalAdvice = `OPPORTUNITY: Low visibility and low saturation — untapped market.`;
   }
 
-  return { name, isOwn, vis, sent, sov, pos, visCount, visTotal, tier, vulnerabilityScore, saturation, status, tacticalAdvice };
+  return { brandId, name, vis, sent, sov, pos, visCount, visTotal, tier, vulnerabilityScore, saturation, status, tacticalAdvice };
 }
 
-// ── items[0] = yesterday (prev), items[1] = today (curr) ─────
-const prevContent = items[1] ? extractContent(items[0]?.json) : null;
-const currContent = extractContent(items[items.length - 1]?.json);
+// ── items[0] = yesterday (prev), items[1] = today (curr), items[2] = list_brands (optional) ─────
+// Detect list_brands item: it has 'is_own' in its columns
+function isListBrandsItem(item) {
+  const c = extractContent(item?.json);
+  return c && Array.isArray(c.columns) && c.columns.some(col => col.toLowerCase() === 'is_own');
+}
+
+const listBrandsItem = items.find(item => isListBrandsItem(item));
+const reportItems    = items.filter(item => !isListBrandsItem(item));
+
+// Build brand_id → is_own map from list_brands
+const isOwnById = {};
+if (listBrandsItem) {
+  const lb = extractContent(listBrandsItem.json);
+  const idIdx  = lb.columns.findIndex(c => c.toLowerCase() === 'id');
+  const ownIdx = lb.columns.findIndex(c => c.toLowerCase() === 'is_own');
+  for (const row of (lb.rows || [])) {
+    isOwnById[row[idIdx]] = row[ownIdx] === true || row[ownIdx] === 1;
+  }
+}
+
+const prevContent = reportItems[1] ? extractContent(reportItems[0]?.json) : null;
+const currContent = extractContent(reportItems[reportItems.length - 1]?.json);
 
 if (!currContent) return results;
 
@@ -84,16 +104,20 @@ const hasPrev = Object.keys(prevByBrand).length > 0;
 const brandAnalysis = currBrands.map(b => {
   const prev = prevByBrand[b.name];
 
-  const evolution = prev ? {
+  // Only compute delta when previous day has actual data (not all-zero placeholder)
+  const prevHasData = prev && (prev.vis > 0 || prev.sent > 0 || prev.pos > 0);
+  const evolution = prevHasData ? {
     visibility_delta: parseFloat((b.vis  - prev.vis).toFixed(3)),
     sentiment_delta:  parseFloat((b.sent - prev.sent).toFixed(1)),
     position_delta:   parseFloat((b.pos  - prev.pos).toFixed(1)),
     trend: b.vis > prev.vis ? 'up' : b.vis < prev.vis ? 'down' : 'stable',
   } : null;
 
+  const isOwn = isOwnById[b.brandId] !== undefined ? isOwnById[b.brandId] : false;
+
   return {
     brand:               b.name,
-    is_own:              b.isOwn,
+    is_own:              isOwn,
     visibility:          b.vis,
     sentiment:           b.sent,
     sentiment_tier:      b.tier.label,

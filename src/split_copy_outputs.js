@@ -43,12 +43,12 @@ return items.map(item => {
   const mx = matrixByPlatform[item.platform] || {};
   const hooksText = (item.hooks || []).map((h, i) => `Hook ${i + 1}: ${h}`).join('\n');
 
-  const docTitle = `[${item.platform}] ${item.copy_angle} — ${item.headline}`;
+  const docTitle = `[${item.platform}] ${item.copy_direction} — ${item.headline}`;
 
   const docContent = [
     `Platform: ${item.platform}`,
     `Priority: ${item.priority}`,
-    `Copy Angle: ${item.copy_angle}`,
+    `Copy Direction: ${item.copy_direction}`,
     mx.timeframe ? `Timeframe: ${mx.timeframe}` : '',
     '',
     `Headline: ${item.headline}`,
@@ -70,7 +70,7 @@ return items.map(item => {
       content: docContent,
       platform: item.platform,
       priority: item.priority,
-      copy_angle: item.copy_angle,
+      copy_direction: item.copy_direction,
     },
   };
 });
