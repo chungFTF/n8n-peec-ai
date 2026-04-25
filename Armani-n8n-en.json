@@ -1,0 +1,2697 @@
+{
+  "name": "Armani-n8n-en",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        -144
+      ],
+      "id": "22207e29-2ec5-47dc-8d1f-9710145f07bc",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-flash-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        -48
+      ],
+      "id": "a190a587-4009-4a58-ab99-4951d184a20d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "list_prompts",
+          "mode": "list",
+          "cachedResultName": "list_prompts"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.today }}",
+            "end_date": "={{ $json.today }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -336
+      ],
+      "id": "7380d753-8abe-46c8-969a-a43076a61d33",
+      "name": "list_shopping_queries1",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "list_search_queries",
+          "mode": "list",
+          "cachedResultName": "list_search_queries"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.today }}",
+            "end_date": "={{ $json.today }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -144
+      ],
+      "id": "9ccb771e-799d-4736-85aa-acf8ca03cab4",
+      "name": "list_search_queries",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const brandItems    = $('clean_brand_report').all();\nconst shoppingItems = $('clean_shopping_queries').all();\nconst searchItems   = $('clean_search_queries').all();\nconst domainItems   = $('clean_domain_reports').all();\n\nreturn [{\n  json: {\n    brand_intel:      brandItems.length > 0 ? brandItems[0].json : null,\n    shopping_queries: shoppingItems.length > 0 ? shoppingItems[0].json : null,\n    search_queries:   searchItems.length > 0 ? searchItems[0].json : null,\n    domain_report:    domainItems.length > 0 ? domainItems[0].json : null,\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        -240
+      ],
+      "id": "965b904c-a5ff-49d7-9c30-c432eef11eb5",
+      "name": "merge_data",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\n// Sentiment range → tier\nfunction sentimentTier(sent) {\n  if (sent <= 44) return { label: 'bad',    weight: 3 };\n  if (sent <= 65) return { label: 'normal', weight: 2 };\n  return                  { label: 'good',  weight: 1 };\n}\n\nfunction extractContent(rawData) {\n  let content = rawData.content;\n  if (Array.isArray(content)) content = content[0];\n  if (content && content.text) content = content.text;\n  if (!content || !content.columns) content = rawData;\n  if (!content || !content.columns) return null;\n  return content;\n}\n\nfunction buildIdx(columns) {\n  const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());\n  return {\n    name:      findIdx('brand_name'),\n    visibility: findIdx('visibility'),\n    vis_count:  findIdx('visibility_count'),\n    vis_total:  findIdx('visibility_total'),\n    sov:        findIdx('share_of_voice'),\n    sentiment:  findIdx('sentiment'),\n    pos:        findIdx('position'),\n    is_own:     findIdx('is_own'),\n  };\n}\n\nfunction parseBrandRow(row, idx) {\n  const name     = row[idx.name];\n  const isOwn    = idx.is_own !== -1 ? (row[idx.is_own] === true || row[idx.is_own] === 'true') : false;\n  const vis      = parseFloat(row[idx.visibility]) || 0;\n  const sent     = parseFloat(row[idx.sentiment])  || 0;\n  const pos      = parseFloat(row[idx.pos])        || 0;\n  const sov      = parseFloat(row[idx.sov])        || 0;\n  const visCount = parseFloat(row[idx.vis_count])  || 0;\n  const visTotal = parseFloat(row[idx.vis_total])  || 1;\n\n  const tier               = sentimentTier(sent);\n  const vulnerabilityScore = pos > 0 && pos <= 5\n    ? parseFloat(((100 - sent) / pos).toFixed(2))\n    : 0;\n  const saturation         = parseFloat(((visCount / visTotal) * 100).toFixed(1));\n\n  let status = 'Stable';\n  let tacticalAdvice = 'Maintain authority.';\n  if (tier.label === 'bad' && pos > 0 && pos <= 5) {\n    status = 'Vulnerable (Target for Attack)';\n    tacticalAdvice = `HIGH PRIORITY: ${name} is visible but has poor sentiment (${sent}).`;\n  } else if (vis < 0.3 && saturation < 20) {\n    status = 'Blue Ocean';\n    tacticalAdvice = `OPPORTUNITY: Low visibility and low saturation — untapped market.`;\n  }\n\n  return { name, isOwn, vis, sent, sov, pos, visCount, visTotal, tier, vulnerabilityScore, saturation, status, tacticalAdvice };\n}\n\n// ── items[0] = yesterday (prev), items[1] = today (curr) ─────\nconst prevContent = items[1] ? extractContent(items[0]?.json) : null;\nconst currContent = extractContent(items[items.length - 1]?.json);\n\nif (!currContent) return results;\n\nconst currIdx = buildIdx(currContent.columns);\nconst currBrands = (currContent.rows || []).map(row => parseBrandRow(row, currIdx));\n\n// Index previous day by brand name (if available)\nconst prevByBrand = {};\nif (prevContent) {\n  const prevIdx = buildIdx(prevContent.columns);\n  for (const row of (prevContent.rows || [])) {\n    const b = parseBrandRow(row, prevIdx);\n    prevByBrand[b.name] = b;\n  }\n}\n\nconst hasPrev = Object.keys(prevByBrand).length > 0;\n\nconst brandAnalysis = currBrands.map(b => {\n  const prev = prevByBrand[b.name];\n\n  const evolution = prev ? {\n    visibility_delta: parseFloat((b.vis  - prev.vis).toFixed(3)),\n    sentiment_delta:  parseFloat((b.sent - prev.sent).toFixed(1)),\n    position_delta:   parseFloat((b.pos  - prev.pos).toFixed(1)),\n    trend: b.vis > prev.vis ? 'up' : b.vis < prev.vis ? 'down' : 'stable',\n  } : null;\n\n  return {\n    brand:               b.name,\n    is_own:              b.isOwn,\n    visibility:          b.vis,\n    sentiment:           b.sent,\n    sentiment_tier:      b.tier.label,\n    position:            b.pos,\n    sov:                 b.sov,\n    saturation:          b.saturation,\n    market_status:       b.status,\n    tactical_advice:     b.tacticalAdvice,\n    vulnerability_score: b.vulnerabilityScore,\n    evolution,\n  };\n});\n\nconst opportunities = brandAnalysis.filter(b => b.market_status !== 'Stable');\n\nresults.push({\n  json: {\n    source:            'get_brand_report',\n    detailed_analysis: brandAnalysis,\n    opportunity_count: opportunities.length,\n    has_evolution:     hasPrev,\n    timestamp:         new Date().toISOString(),\n  }\n});\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        -624
+      ],
+      "id": "45223ced-104b-4e29-bc1c-721f69ad2f23",
+      "name": "clean_brand_report"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const rawData = item.json;\n\n  let content = rawData.content;\n  if (Array.isArray(content)) content = content[0];\n  if (content && content.text) content = content.text;\n  if (!content || !content.columns) content = rawData;\n  if (!content || !content.columns) continue;\n\n  const columns = content.columns;\n  const rows = content.rows || [];\n\n  const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());\n\n  const idx = {\n    id:       findIdx('id'),\n    text:     findIdx('text'),\n    tag_ids:  findIdx('tag_ids'),\n    topic_id: findIdx('topic_id'),\n    volume:   findIdx('volume'),\n  };\n\n  const volumeScore = { low: 1, medium: 2, high: 3 };\n\n  const classifyIntent = (text) => {\n    const t = text.toLowerCase();\n    if (/\\b(buy|shop|store|where can i|best place)\\b/.test(t)) return 'purchase_intent';\n    if (/\\b(compare|analyze|analyse|evaluate|market positioning)\\b/.test(t)) return 'research_intent';\n    if (/\\b(suggest|recommend)\\b/.test(t)) return 'recommendation_intent';\n    if (/\\b(best|top|top-rated|leading)\\b/.test(t)) return 'discovery_intent';\n    if (/\\b(find|identify|locate|list|show me)\\b/.test(t)) return 'discovery_intent';\n    return 'general';\n  };\n\n  const queries = rows.map(row => {\n    const text = row[idx.text] || '';\n    return {\n      id:           row[idx.id],\n      text:         text,\n      tag_ids:      row[idx.tag_ids] || [],\n      topic_id:     row[idx.topic_id],\n      volume:       row[idx.volume] || 'low',\n      volume_score: volumeScore[row[idx.volume]] || 1,\n      intent_type:  classifyIntent(text),\n    };\n  });\n\n  // 依 volume_score 降冪排序，同分再按 intent 優先購買意圖\n  queries.sort((a, b) => {\n    if (b.volume_score !== a.volume_score) return b.volume_score - a.volume_score;\n    const intentPriority = { purchase_intent: 3, discovery_intent: 2, recommendation_intent: 1, research_intent: 0, general: 0 };\n    return (intentPriority[b.intent_type] || 0) - (intentPriority[a.intent_type] || 0);\n  });\n\n  const intentSummary = queries.reduce((acc, q) => {\n    acc[q.intent_type] = (acc[q.intent_type] || 0) + 1;\n    return acc;\n  }, {});\n\n  results.push({\n    json: {\n      source:         'list_shopping_queries',\n      total:          queries.length,\n      intent_summary: intentSummary,\n      queries:        queries,\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -336
+      ],
+      "id": "31544351-9eac-4faa-bfab-e8139075ebb0",
+      "name": "clean_shopping_queries"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const rawData = item.json;\n\n  let content = rawData.content;\n  if (Array.isArray(content)) content = content[0];\n  if (content && content.text) content = content.text;\n  if (!content || !content.columns) content = rawData;\n  if (!content || !content.columns) continue;\n\n  const columns = content.columns;\n  const rows = content.rows || [];\n\n  const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());\n\n  const idx = {\n    prompt_id:        findIdx('prompt_id'),\n    chat_id:          findIdx('chat_id'),\n    model_id:         findIdx('model_id'),\n    model_channel_id: findIdx('model_channel_id'),\n    date:             findIdx('date'),\n    query_index:      findIdx('query_index'),\n    query_text:       findIdx('query_text'),\n  };\n\n  // 從 query_text 萃取出現的品牌名稱（可依實際品牌清單調整）\n  const KNOWN_BRANDS = [\n    'lululemon', 'nike', 'adidas', 'alo', 'gymshark', 'vuori',\n    'athleta', 'under armour', 'puma', 'rhone', 'beyond yoga',\n    'sweaty betty', 'skims', 'fabletics'\n  ];\n\n  const extractBrands = (text) => {\n    const t = text.toLowerCase();\n    return KNOWN_BRANDS.filter(b => t.includes(b));\n  };\n\n  // 整理每一筆 query\n  const allQueries = rows.map(row => ({\n    prompt_id:        row[idx.prompt_id],\n    chat_id:          row[idx.chat_id],\n    model_id:         row[idx.model_id],\n    model_channel_id: row[idx.model_channel_id],\n    date:             row[idx.date],\n    query_index:      row[idx.query_index],\n    query_text:       row[idx.query_text] || '',\n    brands_mentioned: extractBrands(row[idx.query_text] || ''),\n  }));\n\n  // 依 prompt_id 分組，了解每個 prompt 在各 model 產生了哪些搜尋詞\n  const byPrompt = {};\n  for (const q of allQueries) {\n    if (!byPrompt[q.prompt_id]) byPrompt[q.prompt_id] = [];\n    byPrompt[q.prompt_id].push(q);\n  }\n\n  // 依 model_id 統計查詢數量分佈\n  const modelDistribution = allQueries.reduce((acc, q) => {\n    acc[q.model_id] = (acc[q.model_id] || 0) + 1;\n    return acc;\n  }, {});\n\n  // 所有 query_text 去重後的關鍵字池（了解 AI 用哪些詞搜尋這個市場）\n  const uniqueQueryTexts = [...new Set(allQueries.map(q => q.query_text))];\n\n  // 在 query_text 中出現的品牌統計（AI 主動帶入品牌名稱的頻率）\n  const brandMentionCount = {};\n  for (const q of allQueries) {\n    for (const brand of q.brands_mentioned) {\n      brandMentionCount[brand] = (brandMentionCount[brand] || 0) + 1;\n    }\n  }\n\n  // 按提及次數排序\n  const brandMentionRanking = Object.entries(brandMentionCount)\n    .sort((a, b) => b[1] - a[1])\n    .map(([brand, count]) => ({ brand, count }));\n\n  results.push({\n    json: {\n      source:                'list_search_queries',\n      total_queries:         allQueries.length,\n      unique_query_texts:    uniqueQueryTexts.length,\n      model_distribution:    modelDistribution,\n      brand_mention_ranking: brandMentionRanking,\n      unique_keywords:       uniqueQueryTexts,\n      by_prompt:             byPrompt,\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        -144
+      ],
+      "id": "b8b33ac6-c3bc-4470-9320-98daa93ee0a6",
+      "name": "clean_search_queries"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const rawData = item.json;\n\n  let content = rawData.content;\n  if (Array.isArray(content)) content = content[0];\n  if (content && content.text) content = content.text;\n  if (!content || !content.columns) content = rawData;\n  if (!content || !content.columns) continue;\n\n  const columns = content.columns;\n  const rows    = content.rows || [];\n\n  const findIdx = (name) => columns.findIndex(c => c.toLowerCase() === name.toLowerCase());\n\n  const idx = {\n    domain:              findIdx('domain'),\n    classification:      findIdx('classification'),\n    retrieved_pct:       findIdx('retrieved_percentage'),\n    retrieval_rate:      findIdx('retrieval_rate'),\n    citation_rate:       findIdx('citation_rate'),\n    mentioned_brand_ids: findIdx('mentioned_brand_ids'),\n  };\n\n  const domains = rows.map(row => ({\n    domain:              row[idx.domain],\n    classification:      row[idx.classification],\n    retrieved_pct:       parseFloat(row[idx.retrieved_pct])       || 0,  // 0–1，顯示時 ×100\n    retrieval_rate:      parseFloat(row[idx.retrieval_rate])      || 0,  // 直接顯示\n    citation_rate:       parseFloat(row[idx.citation_rate])       || 0,  // 可超過 1.0，直接顯示\n    mentioned_brand_ids: row[idx.mentioned_brand_ids]             || [],\n  }));\n\n  // 依 classification 分組\n  const byClass = domains.reduce((acc, d) => {\n    if (!acc[d.classification]) acc[d.classification] = [];\n    acc[d.classification].push(d);\n    return acc;\n  }, {});\n\n  const ownDomains        = byClass['OWN']        || [];\n  const competitorDomains = (byClass['COMPETITOR'] || []).sort((a, b) => b.citation_rate - a.citation_rate);\n  const ugcDomains        = (byClass['UGC']        || []).sort((a, b) => b.citation_rate - a.citation_rate);\n\n  // Gap score: 衡量此域名對市場的影響力，但自有品牌尚未在此建立存在感\n  // gap_score = citation_rate × retrieval_rate\n  // citation_rate 高 → AI 頻繁引用此域名\n  // retrieval_rate 高 → AI 頻繁檢索此域名作為資料來源\n  // 兩者都高 → 此域名對 AI 推薦影響極大，是優先投資標的\n  const GAP_TYPES = ['EDITORIAL', 'REFERENCE', 'UGC'];\n\n  const investmentCandidates = domains\n    .filter(d => GAP_TYPES.includes(d.classification))\n    .map(d => ({\n      ...d,\n      gap_score: parseFloat((d.citation_rate * d.retrieval_rate).toFixed(4)),\n    }))\n    .sort((a, b) => b.gap_score - a.gap_score);\n\n  // 分類後的投資建議（各類型前 5，再合併去重後取前 10）\n  const topByType = {};\n  for (const type of GAP_TYPES) {\n    topByType[type] = investmentCandidates\n      .filter(d => d.classification === type)\n      .slice(0, 5);\n  }\n\n  const seen = new Set();\n  const domain_investment_suggestion = investmentCandidates\n    .filter(d => {\n      if (seen.has(d.domain)) return false;\n      seen.add(d.domain);\n      return true;\n    })\n    .slice(0, 10)\n    .map(d => ({\n      domain:          d.domain,\n      classification:  d.classification,\n      citation_rate:   d.citation_rate,\n      retrieval_rate:  d.retrieval_rate,\n      gap_score:       d.gap_score,\n      why: d.classification === 'EDITORIAL'\n        ? '高權威媒體，AI 頻繁引用，適合投稿或品牌合作'\n        : d.classification === 'REFERENCE'\n        ? '參考型來源（如維基百科），AI 信任度最高，優先建立品牌條目'\n        : 'UGC 平台，真實用戶評論驅動 AI 搜尋推薦',\n    }));\n\n  // 高引用域名（citation_rate > 1.0），排除已是自有域名者\n  const ownSet = new Set(ownDomains.map(d => d.domain));\n  const highCitationDomains = domains\n    .filter(d => d.citation_rate > 1.0 && !ownSet.has(d.domain))\n    .sort((a, b) => b.citation_rate - a.citation_rate);\n\n  results.push({\n    json: {\n      source:                      'get_domain_report',\n      total_domains:               domains.length,\n      own_domains:                 ownDomains,\n      competitor_domains:          competitorDomains,\n      ugc_domains:                 ugcDomains,\n      high_citation_domains:       highCitationDomains,\n      domain_investment_suggestion,\n      investment_by_type:          topByType,\n      by_classification:           byClass,\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        16
+      ],
+      "id": "cfd80d70-31d9-43d3-98a6-19f87f009f50",
+      "name": "clean_domain_reports"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "get_domain_report",
+          "mode": "list",
+          "cachedResultName": "get_domain_report"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.today }}",
+            "end_date": "={{ $json.today }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        16
+      ],
+      "id": "4bb939cb-8130-4bc4-beff-3f638aa3d364",
+      "name": "get_domain_report",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        832,
+        -272
+      ],
+      "id": "9e749110-2835-41e2-b6f0-d6a0aa327cb6",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "fromEmail": "REPLACE_WITH_EMAIL@example.com",
+        "toEmail": "REPLACE_WITH_EMAIL@example.com",
+        "subject": "Armani",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        3264,
+        -720
+      ],
+      "id": "c5ad30a2-f2b7-4204-8daa-47cc3ff98851",
+      "name": "Send an Email",
+      "webhookId": "REDACTED_WEBHOOK_ID",
+      "credentials": {
+        "smtp": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2160,
+        -832
+      ],
+      "id": "251fedfd-b86f-4af2-98a6-39e02d46c386",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\n// AI Agent output — first item with an `output` field\nconst agentItem = allItems.find(i => i.json.output !== undefined) || allItems[0];\nconst raw = agentItem.json;\n\n// Parse JSON from AI Agent output (handles string or object)\nfunction extractJSON(str) {\n  const start = str.search(/[{[]/);\n  if (start === -1) return str;\n  let depth = 0, inString = false, escape = false;\n  for (let i = start; i < str.length; i++) {\n    const ch = str[i];\n    if (escape) { escape = false; continue; }\n    if (ch === '\\\\' && inString) { escape = true; continue; }\n    if (ch === '\"') { inString = !inString; continue; }\n    if (inString) continue;\n    if (ch === '{' || ch === '[') depth++;\n    if (ch === '}' || ch === ']') { depth--; if (depth === 0) return str.slice(start, i + 1); }\n  }\n  return str.slice(start);\n}\n\nlet data;\nif (typeof raw.output === 'string') {\n  const stripped = raw.output.replace(/^```json\\s*/i, '').replace(/```\\s*$/i, '').trim();\n  data = JSON.parse(extractJSON(stripped));\n} else if (typeof raw.output === 'object' && raw.output !== null) {\n  data = raw.output;\n} else {\n  data = raw;\n}\n\n// Brand report from clean_brand_report.js (passed via Merge node)\nconst brandReportItem = allItems.find(i => i.json.source === 'get_brand_report');\nconst allBrands = brandReportItem?.json?.detailed_analysis || [];\n\n// Content strategy matrix items from combine_strategy_with_docs.js\nconst strategyItems = allItems.filter(i => i.json.documentId && i.json.content_format);\n\nconst d = data;\nconst date = d.report_date || new Date().toISOString().slice(0, 10);\n\nconst lines = [];\n\n// ── Header ────────────────────────────────────────────────────\nlines.push(`# Strategic Conquest Dashboard — ${date}`);\nlines.push('');\n\n// ══════════════════════════════════════════════════════════════\n// PART 1 · Battlefield Alert\n// Lead with real-time sentiment & visibility signals (defensive radar)\n// ══════════════════════════════════════════════════════════════\nlines.push('## PART 1 · Battlefield Alert');\nlines.push('*Brand Asset Erosion Warning — real-time signals from the AI battlefield*');\nlines.push('');\n\nif ((d.evolution_highlights || []).length > 0) {\n  d.evolution_highlights.forEach(e => {\n    const arrow = e.trend === 'up' ? '↑' : e.trend === 'down' ? '↓' : '→';\n    const fmt = (n) => (n > 0 ? `+${n}` : `${n}`);\n    const alertIcon = e.trend === 'down' ? '🔴' : e.trend === 'up' ? '🟢' : '🟡';\n    lines.push(`> ${alertIcon} ${arrow} **${e.brand}** (Visibility ${fmt(e.visibility_delta)}) — ${e.insight}`);\n  });\n  lines.push('');\n}\n\nconst ob = d.own_brand_summary;\nif (ob) {\n  lines.push(`### Brand Status — ${ob.brand}`);\n  const bi = ob.brand_intel || {};\n  const sp = ob.search_presence || {};\n  const dp = ob.domain_presence || {};\n\n  lines.push('| Metric | Value |');\n  lines.push('|--------|-------|');\n  lines.push(`| Visibility | ${bi.visibility ?? '—'} |`);\n  lines.push(`| Sentiment Score | ${bi.sentiment ?? '—'} |`);\n  lines.push(`| Position | ${bi.position ?? '—'} |`);\n  lines.push(`| Share of Voice (SoV) | ${bi.share_of_voice ?? '—'} |`);\n  lines.push(`| Market Status | ${bi.market_status ?? '—'} |`);\n  lines.push(`| Vulnerability Score | ${bi.vulnerability_score ?? '—'} |`);\n  lines.push(`| AI Search Mention Ranking | ${sp.brand_mention_ranking ?? '—'} |`);\n  lines.push(`| Avg. Citation Rate | ${dp.avg_citation_rate ?? '—'} |`);\n  lines.push(`| Avg. Retrieval Rate | ${dp.avg_retrieval_rate ?? '—'} |`);\n  lines.push(`| Cited Domains | ${(dp.own_domains_cited || []).join(', ') || '—'} |`);\n  lines.push('');\n  lines.push('> **Vulnerability Score Explained**');\n  lines.push('> Formula: `(100 − Sentiment Score) ÷ Position` — calculated for top-5 ranked brands only');\n  lines.push('> Higher score = more visible but poorer reputation = higher attack priority');\n  lines.push('> Sentiment tiers: 0–44 Poor  45–65 Fair  66–100 Good');\n  lines.push('');\n\n  if ((sp.unique_keywords || []).length > 0) {\n    lines.push(`**Related Keywords:** ${sp.unique_keywords.join(', ')}`);\n    lines.push('');\n  }\n\n  if (ob.raw_summary) {\n    lines.push(ob.raw_summary);\n    lines.push('');\n  }\n}\n\n// ══════════════════════════════════════════════════════════════\n// PART 2 · Vulnerability Radar\n// Competitor weakness scan — ranked by attack priority\n// ══════════════════════════════════════════════════════════════\nlines.push('## PART 2 · Vulnerability Radar');\nlines.push('*Competitor weakness scan — ranked by attack priority*');\nlines.push('');\n\nconst competitors = allBrands.filter(b => !b.is_own);\nif (competitors.length > 0) {\n  lines.push('### Competitor Metrics & Daily Evolution');\n  lines.push('<!-- COMPETITORS_CHART -->');\n  lines.push('');\n}\n\nlines.push('### Competitive Landscape Overview');\nlines.push('<!-- RADAR_CHART -->');\nlines.push('<!-- COMPETITIVE_LANDSCAPE -->');\nlines.push('');\n\nconst cs = d.competitive_summary || {};\n\n\n// ══════════════════════════════════════════════════════════════\n// PART 3 · Execution Matrix (Live)\n// Closed loop: Monitor → Analyze → Direct → Execute\n// ══════════════════════════════════════════════════════════════\nlines.push('## PART 3 · Execution Matrix (Live)');\nlines.push('*Closed loop: Monitor → Analyze → Direct → Execute*');\nlines.push('');\n\nif ((d.action_plan || []).length > 0) {\n  lines.push('### Action Commands');\n  lines.push('| Priority | Timeframe | Action Item | Rationale |');\n  lines.push('|----------|-----------|-------------|-----------|');\n  d.action_plan.forEach(a => {\n    const priority = (a.priority || '').toUpperCase();\n    lines.push(`| ${priority} | ${a.timeframe} | ${a.action} | ${a.rationale} |`);\n  });\n  lines.push('');\n}\n\nif (strategyItems.length > 0) {\n  lines.push('### Content Deployment Briefs');\n  strategyItems.forEach((item, idx) => {\n    if (idx > 0) lines.push('---');\n    const s = item.json;\n    const docUrl = `https://docs.google.com/document/d/${s.documentId}`;\n    const priorityLabel = (s.priority || '').toUpperCase();\n    lines.push(`#### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);\n    lines.push(`**Format:** ${s.content_format}`);\n    lines.push(`**Audience:** ${s.audience}`);\n    lines.push(`**Content Brief:** ${s.content_brief}`);\n    if (s.reference_insight) lines.push(`**Reference Insight:** ${s.reference_insight}`);\n    lines.push(`**Document:** [Open Google Doc](${docUrl})`);\n    lines.push('');\n  });\n}\n\nlines.push('---');\nlines.push('*This dashboard is a living document. Peec AI refreshes competitive signals every 6 hours.*');\n\nconst markdown = lines.join('\\n');\n\nreturn [\n  { json: { ...data, allBrands } },\n  { json: { markdown } },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2688,
+        -720
+      ],
+      "id": "b88011dd-f6ca-481b-a893-72c8c2ef17e4",
+      "name": "json to markdown"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        384
+      ],
+      "id": "db4fdcbe-cfb5-4136-b765-6b14a92aad93",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\n\n// Parse AI Agent output (handles string or object)\nfunction extractJSON(str) {\n  const start = str.search(/[{[]/);\n  if (start === -1) return str;\n  let depth = 0, inString = false, escape = false;\n  for (let i = start; i < str.length; i++) {\n    const ch = str[i];\n    if (escape) { escape = false; continue; }\n    if (ch === '\\\\' && inString) { escape = true; continue; }\n    if (ch === '\"') { inString = !inString; continue; }\n    if (inString) continue;\n    if (ch === '{' || ch === '[') depth++;\n    if (ch === '}' || ch === ']') { depth--; if (depth === 0) return str.slice(start, i + 1); }\n  }\n  return str.slice(start);\n}\n\nlet data;\nif (typeof raw.output === 'string') {\n  const stripped = raw.output.replace(/^```json\\s*/i, '').replace(/```\\s*$/i, '').trim();\n  data = JSON.parse(extractJSON(stripped));\n} else if (typeof raw.output === 'object' && raw.output !== null) {\n  data = raw.output;\n} else {\n  data = raw;\n}\n\nreturn [{\n  json: {\n    report_date:          data.report_date,\n    action_plan:          data.action_plan          || [],\n    market_opportunities: data.market_opportunities || [],\n    content_strategy:     data.content_strategy     || {},\n    copy_brief:           data.copy_brief           || {},\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1712,
+        -240
+      ],
+      "id": "79dc8a06-3b9d-4234-9b18-017088298732",
+      "name": "extract_agent_sections"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "get_url_report",
+          "mode": "list",
+          "cachedResultName": "get_url_report"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.today }}",
+            "end_date": "={{ $json.today }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        208
+      ],
+      "id": "cc8138ac-cc48-4a15-98d3-50bcd9253742",
+      "name": "get_url_content",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "get_url_content",
+          "mode": "list",
+          "cachedResultName": "get_url_content"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "url": "={{ $json.url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "max_length",
+              "displayName": "max_length",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        800,
+        336
+      ],
+      "id": "ced28e13-fe00-47f2-b9ed-798077a4af33",
+      "name": "get_url_content1",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 接在 get_url_report MCP call 之後\n// 解析欄位式 JSON，抽出 citation_rate 最高的前 N 筆 URL，逐筆輸出供 get_url_content 使用\nconst TOP_N = 5;\n\nconst raw = $input.first().json;\n\n// get_url_report 回傳結構：content[0].text = { columns, rows }\nconst textBlock = raw?.content?.[0]?.text;\nif (!textBlock) throw new Error('extract_top_urls: 找不到 content[0].text');\n\nconst { columns, rows } = typeof textBlock === 'string'\n  ? JSON.parse(textBlock)\n  : textBlock;\n\nif (!columns || !rows) throw new Error('extract_top_urls: 欄位或資料列缺失');\n\nconst colIdx = Object.fromEntries(columns.map((c, i) => [c, i]));\n\nconst parsed = rows\n  .map(r => ({\n    url:            r[colIdx['url']],\n    classification: r[colIdx['classification']],\n    title:          r[colIdx['title']] || '',\n    citation_rate:  r[colIdx['citation_rate']] ?? 0,\n    citation_count: r[colIdx['citation_count']] ?? 0,\n  }))\n  .filter(r => r.url)\n  .sort((a, b) => b.citation_rate - a.citation_rate)\n  .slice(0, TOP_N);\n\nreturn parsed.map(r => ({ json: r }));\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        544,
+        208
+      ],
+      "id": "b5ebd747-962d-423e-8628-31ad4b09be92",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1440,
+        144
+      ],
+      "id": "659b0e5f-62b0-4783-b0c7-060071b1b797",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Runs after the copy instruction agent.\n// Parses the output and passes copy_instruction_matrix as a single item to the copy writer agent.\nconst raw = $input.first().json;\n\nlet data;\nif (typeof raw.output === 'string') {\n  const cleaned = raw.output.replace(/^```json\\s*/i, '').replace(/```\\s*$/i, '').trim();\n  data = JSON.parse(cleaned);\n} else if (typeof raw.output === 'object' && raw.output !== null) {\n  data = raw.output;\n} else {\n  data = raw;\n}\n\nconst matrix = data.copy_instruction_matrix;\nif (!Array.isArray(matrix) || matrix.length === 0) {\n  throw new Error('extract_copy_matrix: copy_instruction_matrix is empty or malformed');\n}\n\nreturn [{ json: { copy_instruction_matrix: matrix } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        0
+      ],
+      "id": "c338dcc3-b282-4aad-8670-3aeec6ec78cf",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3-flash-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2336,
+        256
+      ],
+      "id": "6cbb9874-dec8-4052-9668-39f1700b57e1",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\n// AI Agent output — first item with an `output` field\nconst agentItem = allItems.find(i => i.json.output !== undefined) || allItems[0];\nconst raw = agentItem.json;\n\n// Parse JSON from AI Agent output (handles string or object)\nfunction extractJSON(str) {\n  const start = str.search(/[{[]/);\n  if (start === -1) return str;\n  let depth = 0, inString = false, escape = false;\n  for (let i = start; i < str.length; i++) {\n    const ch = str[i];\n    if (escape) { escape = false; continue; }\n    if (ch === '\\\\' && inString) { escape = true; continue; }\n    if (ch === '\"') { inString = !inString; continue; }\n    if (inString) continue;\n    if (ch === '{' || ch === '[') depth++;\n    if (ch === '}' || ch === ']') { depth--; if (depth === 0) return str.slice(start, i + 1); }\n  }\n  return str.slice(start);\n}\n\nlet data;\nif (typeof raw.output === 'string') {\n  const stripped = raw.output.replace(/^```json\\s*/i, '').replace(/```\\s*$/i, '').trim();\n  data = JSON.parse(extractJSON(stripped));\n} else if (typeof raw.output === 'object' && raw.output !== null) {\n  data = raw.output;\n} else {\n  data = raw;\n}\n\n// Look up copy_instruction_matrix for rationale + timeframe enrichment\nconst matrixItem = allItems.find(i => i.json.copy_instruction_matrix);\nconst matrix = matrixItem?.json?.copy_instruction_matrix || [];\nconst matrixByPlatform = {};\nmatrix.forEach(m => { matrixByPlatform[m.platform] = m; });\n\nconst items = data.copy_outputs || [];\n\nreturn items.map(item => {\n  const mx = matrixByPlatform[item.platform] || {};\n  const hooksText = (item.hooks || []).map((h, i) => `Hook ${i + 1}: ${h}`).join('\\n');\n\n  const docTitle = `[${item.platform}] ${item.copy_angle} — ${item.headline}`;\n\n  const docContent = [\n    `Platform: ${item.platform}`,\n    `Priority: ${item.priority}`,\n    `Copy Angle: ${item.copy_angle}`,\n    mx.timeframe ? `Timeframe: ${mx.timeframe}` : '',\n    '',\n    `Headline: ${item.headline}`,\n    `Subheadline: ${item.subheadline}`,\n    '',\n    'Body:',\n    item.body,\n    '',\n    'Hooks:',\n    hooksText,\n    '',\n    `CTA: ${item.cta}`,\n    mx.reason ? `\\nRationale: ${mx.reason}` : '',\n  ].filter(line => line !== undefined).join('\\n');\n\n  return {\n    json: {\n      title: docTitle,\n      content: docContent,\n      platform: item.platform,\n      priority: item.priority,\n      copy_angle: item.copy_angle,\n    },\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2672,
+        -144
+      ],
+      "id": "c5365bd4-d742-4375-92c5-612d34d8a422",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.documentId }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $json.content }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        3488,
+        -192
+      ],
+      "id": "a3adbc95-ab3f-40de-b9e5-79f2e319b8e4",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "folderId": "17EnpGAMip2qo4rJA05xtNm73DVtj28-o",
+        "title": "={{ $json.title }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        2848,
+        0
+      ],
+      "id": "a3f3b371-79b0-47a2-bbd3-1df53b4d5263",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2992,
+        -192
+      ],
+      "id": "07bd7003-a710-4bf8-9c71-0149bbfc68a6",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a senior competitive intelligence strategist specializing in brand visibility, GEO optimization, search dominance, and competitive positioning in the AI era.\n\nYour task is to analyze the provided competitive intelligence dataset and generate a structured strategic report.\n\nThe dataset contains the following four sections:\n- brand_intel: Visibility, sentiment analysis, ranking, share of voice, and market status for each competing brand. Each brand includes a sentiment_tier (bad / normal / good) and a vulnerability_score (see formula below). When available, each brand also includes an evolution object with yesterday-to-today deltas: visibility_delta, sentiment_delta, position_delta, and trend (up / down / stable).\n- shopping_queries: Purchase-intent queries being tracked, with search volume and intent classification.\n- search_queries: Search terms actually generated by AI engines when answering prompts, including brands mentioned. Use brand_mention_ranking and unique_keywords to identify which brands dominate AI search and which topics are driving visibility.\n- domain_report: Domains cited by AI engines, classified by type (EDITORIAL, UGC, COMPETITOR, OWN, etc.), with retrieval rate, citation rate, and gap_score. domain_investment_suggestion is a prioritized list of domains sorted by gap_score.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━\nvulnerability_score Formula\n━━━━━━━━━━━━━━━━━━━━━━━━━\nFormula: vulnerability_score = (100 − sentiment) / position\nCondition: Only applies when position is between 1–5 (only top-5 ranked brands have attack value); otherwise score is 0.\n\nInterpretation:\n- Lower sentiment (worse brand reputation) → larger numerator → higher score\n- Lower position (higher rank, more visible) → smaller denominator → higher score\n- A higher score means the brand is highly visible but poorly regarded — the most worthwhile attack target for the own brand\n\nsentiment_tier for semantic clarity (does not affect score calculation):\n- bad (0–44): Clearly poor reputation\n- normal (45–65): Average reputation\n- good (66–100): Good reputation\n━━━━━━━━━━━━━━━━━━━━━━━━━\n\nRules:\n- Only use information explicitly present in the dataset.\n- Do not fabricate metrics, percentages, rankings, or conclusions.\n- When citing numbers, use exact values from the dataset.\n- Focus on actionable business insights, not generic summaries.\n- Own brand: The brand with is_own=true in brand_intel is your client's brand. Never include it in top_threat, attack_targets, or copy_brief's attack_copy. All analysis must be from this brand's perspective, never against it.\n- top_threat: Must be selected only from competitor brands (is_own=false), and should prioritize the brand whose metrics profile is most similar to the own brand. Use closeness in visibility range and position rank as the primary criteria. This should be the competitor most likely to be directly compared with the own brand in AI-generated responses.\n- attack_targets: Only select competitor brands (is_own=false) with market_status \"Stable\" and the highest vulnerability_score. Brands with market_status \"Blue Ocean\" must never be listed as attack targets — they belong only in blue_ocean_brands.\n- search_queries: Use brand_mention_ranking to identify which competitors dominate AI-generated search results. Use unique_keywords to surface content topics worth targeting.\n- sentiment_tier: When describing weaknesses of attack_targets, reference the sentiment_tier label (bad / normal / good) for semantic clarity.\n- evolution: When evolution data is present, reference visibility_delta and trend in key_insights and action_plan. Highlight brands gaining or losing visibility. If the own brand's evolution shows a negative trend, flag it as a priority action.\n- domain_investment_suggestion: From domain_report, sorted by gap_score (= citation_rate × retrieval_rate). Represents platforms where the own brand should invest first. Reference this list in content_strategy's own_brand_gaps_by_type.\n- Language: All descriptive text fields (reason, weakness, angle, why, opportunity, action, awareness, consideration, purchase, raw_summary, content_gaps, etc.) must be written in English.\n\nInput data:\n{{ JSON.stringify($json) }}\n\nReturn only a valid JSON object. Do not include any additional text, Markdown, or code blocks.\n\n{\n  \"report_date\": \"YYYY-MM-DD\",\n\n  \"own_brand_summary\": {\n    \"brand\": \"Own brand name (is_own=true)\",\n    \"brand_intel\": {\n      \"visibility\": 0,\n      \"sentiment\": 0,\n      \"position\": 0,\n      \"share_of_voice\": 0,\n      \"market_status\": \"market status\",\n      \"vulnerability_score\": 0\n    },\n    \"search_presence\": {\n      \"brand_mention_ranking\": 0,\n      \"unique_keywords\": [\"keyword one\", \"keyword two\"]\n    },\n    \"domain_presence\": {\n      \"own_domains_cited\": [\"domain one\", \"domain two\"],\n      \"avg_citation_rate\": 0,\n      \"avg_retrieval_rate\": 0\n    },\n    \"raw_summary\": \"Bullet-point summary of the own brand's raw data across all four dataset sections — factual only, no evaluation\"\n  },\n\n  \"competitive_summary\": {\n    \"top_threat\": {\n      \"brand\": \"brand name\",\n      \"reason\": \"Explain why this is the closest comparable competitor with specific metrics\",\n      \"similarity_reason\": \"Explain how this competitor resembles the own brand (must include visibility and position)\",\n      \"visibility\": 0,\n      \"sentiment\": 0,\n      \"position\": 0\n    },\n    \"attack_targets\": [\n      {\n        \"brand\": \"brand name\",\n        \"weakness\": \"Specific weakness with supporting metrics\",\n        \"vulnerability_score\": 0,\n        \"attack_angle\": \"Recommended attack strategy\"\n      }\n    ],\n    \"blue_ocean_brands\": [\n      {\n        \"brand\": \"brand name\",\n        \"reason\": \"Explain why this brand represents a blue ocean opportunity\",\n        \"visibility\": 0,\n        \"saturation\": 0\n      }\n    ]\n  },\n\n  \"market_opportunities\": [\n    {\n      \"opportunity\": \"Opportunity description\",\n      \"data_source\": \"brand_intel / shopping_queries / search_queries / domain_report\",\n      \"priority\": \"high / medium / low\",\n      \"action\": \"Recommended action to take\"\n    }\n  ],\n\n  \"content_strategy\": {\n    \"top_platforms\": [\n      {\n        \"domain\": \"domain name\",\n        \"classification\": \"EDITORIAL / REFERENCE / UGC / COMPETITOR / SOCIAL / etc.\",\n        \"citation_rate\": 0,\n        \"why\": \"Explain why this platform matters\"\n      }\n    ],\n    \"own_brand_gaps_by_type\": [\n      {\n        \"type\": \"Site type, e.g. EDITORIAL / UGC / REFERENCE / SOCIAL / etc.\",\n        \"platforms\": [\"Specific domains where competitors are cited but own brand is absent\"],\n        \"gap_severity\": \"high / medium / low\",\n        \"reason\": \"Explain why this type represents a gap for the own brand — e.g. high competitor citation rate, AI engine preference for this source type, or zero own-brand presence on these platforms\"\n      }\n    ],\n    \"content_gaps\": \"Summary of the own brand's overall content gap across platform types\",\n    \"recommended_topics\": [\"topic one\", \"topic two\", \"topic three\"],\n    \"ugc_opportunities\": [\"platform one with UGC potential\", \"platform two\"]\n  },\n\n  \"copy_brief\": {\n    \"attack_copy\": {\n      \"target_brand\": \"brand name\",\n      \"angle\": \"Messaging angle targeting their weakness\"\n    },\n    \"awareness\": \"Message for users who are not yet familiar with the brand\",\n    \"consideration\": \"Message for users who are comparing options\",\n    \"purchase\": \"Message for users who are ready to buy\"\n  },\n\n  \"key_insights\": [\n    \"One-sentence insight with a key metric\",\n    \"One-sentence insight with a key metric\",\n    \"One-sentence insight with a key metric\",\n    \"One-sentence insight with a key metric\",\n    \"One-sentence insight with a key metric\"\n  ],\n\n  \"insight_analysis\": [\n    {\n      \"insight\": \"The corresponding key insight verbatim\",\n      \"explanation\": \"In-depth explanation of this insight — why this metric matters, what market implications it carries, and its practical impact on the own brand (2–4 sentences)\"\n    }\n  ],\n\n  \"action_plan\": [\n    {\n      \"action\": \"Specific action item (one sentence)\",\n      \"rationale\": \"Why this should be done now — based on current data\",\n      \"priority\": \"high / medium / low\",\n      \"timeframe\": \"Immediate / Short-term (within 1 month) / Mid-term (1–3 months)\"\n    }\n  ],\n\n  \"evolution_highlights\": [\n    {\n      \"brand\": \"brand name\",\n      \"trend\": \"up / down / stable\",\n      \"visibility_delta\": 0,\n      \"insight\": \"One sentence explaining what this day-over-day change means for competitive positioning\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1232,
+        -240
+      ],
+      "id": "79d460fc-d347-40e4-a6ef-7c0a0fe3d6f1",
+      "name": "Report Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a senior brand content strategist specializing in multi-platform copywriting and precise audience targeting.\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nINPUT DATA\n━━━━━━━━━━━━━━━━━━━━━━━━\nYour input is a single JSON object with three fields:\n\n- strategy: contains market_opportunities, content_strategy, copy_brief, action_plan\n- url_metas: array of URL metadata (url, title, citation_rate, classification)\n- url_contents: array of scraped articles (url, title, domain, classification, content)\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nCOPY DIRECTIONS (sole reference)\n━━━━━━━━━━━━━━━━━━━━━━━━\nThis matrix generates output for the following four directions only. Use the exact copy below as the core message for each:\n\n[ATTACK] Target brand: Chanel\nHighlight GA foundation's superior \"luminous glow\" and \"long-lasting wear for combination skin\" over traditional luxury brands, leading with lab data comparisons.\n\n[AWARENESS]\nDiscover Giorgio Armani's prestige makeup artistry — crafted to give your skin a bespoke, velvety radiance.\n\n[CONSIDERATION]\nComparing top-tier foundations: why does GA strike the perfect balance between lasting wear and skin hydration?\n\n[PURCHASE]\nSeize Taiwan's department store promotions now — pick up a GA luxury foundation gift set and experience the best value in prestige beauty.\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nSTEP 1: EXTRACT HIGH-PERFORMING CONTENT INSIGHTS\n━━━━━━━━━━━━━━━━━━━━━━━━\nAnalyze each article in the url_contents array (the content field holds the article body):\n\n- Title and core angle\n- Content structure (listicle / in-depth review / comparison / shopping guide)\n- Tone and style (professional editorial / conversational / data-driven / emotionally driven)\n- How Armani Beauty or competitors are mentioned (presence, framing, angle)\n- Most resonant selling points for the target audience\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nSTEP 2: PRODUCE A 5-ENTRY COPY INSTRUCTION MATRIX\n━━━━━━━━━━━━━━━━━━━━━━━━\nSort by priority (high → medium → low) and output only the top 5 entries.\nEach entry must correspond to one of the four copy directions above. Each direction must appear at least once; if a 5th entry is needed, use the highest-priority direction.\n\nReference the following input fields for platform selection and supporting rationale:\n- strategy.market_opportunities: market opportunities and audience needs\n- strategy.content_strategy: platform priorities, own_brand_gaps_by_type gap analysis\n- strategy.action_plan: action timeline\n\nRequirements:\n- copy_angle must paste the exact copy direction text above, then add platform-specific application notes.\n- reason must cite specific numbers or gap analysis from the input (e.g., citation_rate, gap_severity) — no vague statements.\n- reference_insight must come from articles actually read in Step 1, with the source URL — do not fabricate.\n- All text fields must be answered in Traditional Chinese.\n- Return valid JSON only — no markdown or extra text.\n\nInput data:\n{{ JSON.stringify($json) }}\n\n{\n  \"copy_instruction_matrix\": [\n    {\n      \"platform\": \"Platform name (e.g., YouTube, Dcard, Elle.com)\",\n      \"platform_type\": \"UGC / EDITORIAL / REFERENCE\",\n      \"content_format\": \"Video / Long-form review / Discussion thread / Feature article / KOL collaboration\",\n      \"audience\": \"Specific audience description (age, skin type, usage context, purchase motivation)\",\n      \"content_brief\": \"What this piece of content says, what angle it takes, and what the core message is\",\n      \"copy_angle\": \"Exact copy direction text + platform-specific application notes\",\n      \"reference_insight\": \"Style or structure takeaway from articles actually read in the input, with source URL\",\n      \"reason\": \"Why this platform × audience × content combination is the right call — must cite data or gap analysis\",\n      \"priority\": \"high / medium / low\",\n      \"timeframe\": \"Immediate / Short-term (within 1 month) / Mid-term (1–3 months)\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1840,
+        144
+      ],
+      "id": "2054ccdf-8085-42a1-9af0-730f70d40543",
+      "name": "Strategy Agent"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a top-tier brand copywriter specializing in prestige beauty, skilled at crafting persuasive, platform-native copy tailored to different audiences.\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nTASK\n━━━━━━━━━━━━━━━━━━━━━━━━\nBased on the input copy_instruction_matrix, produce a complete set of copy for each entry.\n\nEach entry corresponds to a specific platform and audience combination. Strictly follow the copy_angle direction and content_brief for that entry.\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nREQUIRED COPY ELEMENTS PER ENTRY\n━━━━━━━━━━━━━━━━━━━━━━━━\n- headline: Title (attention-grabbing, platform-appropriate, under 15 characters)\n- subheadline: Subtitle or opening line (provides context, under 30 characters)\n- body: Main copy\n  - Editorial media (EDITORIAL): 350–500 words, 3–4 paragraphs, each with a subheading or line break, professional yet warm tone\n  - Video script (UGC video): 200–300 words, structured as intro / testing process / conclusion, natural conversational rhythm\n  - Discussion thread / shopping guide (UGC forum): 200–280 words, mix of bullet points and narrative, written like an authentic user sharing their experience\n- hooks: 3 short social media posts (20–35 characters each, usable standalone on IG / FB / X, each with a distinct tone: one emotionally resonant, one data-driven, one action-oriented)\n- cta: Call-to-action line (under 15 characters)\n\n━━━━━━━━━━━━━━━━━━━━━━━━\nREQUIREMENTS\n━━━━━━━━━━━━━━━━━━━━━━━━\n- headline, body, and cta must stay true to the copy_angle direction — no deviation.\n- body must incorporate the core message from content_brief and match the tone preference of the audience (high-end editorial = professional; UGC platforms = conversational and relatable).\n- No brand name other than \"Armani Beauty\" may appear as a positive recommendation. Chanel may only appear in the ATTACK angle.\n- All text fields must be written in English.\n- Return valid JSON only — no markdown or extra text.\n\nInput data:\n{{ JSON.stringify($json.copy_instruction_matrix) }}\n\n{\n  \"copy_outputs\": [\n    {\n      \"platform\": \"Platform name from the matrix\",\n      \"priority\": \"Priority from the matrix\",\n      \"copy_angle\": \"Copy angle direction label from the matrix (ATTACK / AWARENESS / CONSIDERATION / PURCHASE)\",\n      \"headline\": \"Headline copy\",\n      \"subheadline\": \"Subtitle or opening line\",\n      \"body\": \"Main copy (written in paragraphs, meeting the required word count)\",\n      \"hooks\": [\"Emotionally resonant hook\", \"Data-driven hook\", \"Action-oriented hook\"],\n      \"cta\": \"Call-to-action\"\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2416,
+        32
+      ],
+      "id": "57276d56-3d60-412b-b82b-7b755a45be13",
+      "name": "Content Generation Agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\n// Separate items by type\nconst docItems    = allItems.filter(i => i.json.kind === 'drive#file' && i.json.id);\nconst copyItems   = allItems.filter(i => i.json.content !== undefined && i.json.title !== undefined);\n\n// Pair by position: copy item N → doc item N\nreturn copyItems.map((copyItem, idx) => {\n  const doc = docItems[idx];\n  if (!doc) throw new Error(`No Google Doc found for copy item ${idx} (${copyItem.json.platform})`);\n\n  return {\n    json: {\n      documentId: doc.json.id,\n      title:      copyItem.json.title,\n      content:    copyItem.json.content,\n      platform:   copyItem.json.platform,\n      priority:   copyItem.json.priority,\n      copy_angle: copyItem.json.copy_angle,\n    },\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3248,
+        64
+      ],
+      "id": "f1affc0d-713f-4712-bd49-b834469d38d0",
+      "name": "id_content_combine"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2160,
+        -304
+      ],
+      "id": "8b45229b-db0e-459c-a6f4-9d485aecc6de",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\n// Item with copy_instruction_matrix = strategy source\nconst matrixItem = allItems.find(i => i.json.copy_instruction_matrix);\nconst matrix = matrixItem?.json.copy_instruction_matrix || [];\n\n// Remaining items = created Google Docs (have documentId + platform)\nconst docItems = allItems.filter(i => i.json.documentId && i.json.platform);\n\n// Match by position (matrix and docs are in the same order)\nreturn matrix.map((strategy, idx) => {\n  const doc = docItems[idx];\n  if (!doc) throw new Error(`No document found for matrix item ${idx} (${strategy.platform})`);\n\n  return {\n    json: {\n      documentId:       doc.json.documentId,\n      platform:         strategy.platform,\n      platform_type:    strategy.platform_type,\n      content_format:   strategy.content_format,\n      audience:         strategy.audience,\n      content_brief:    strategy.content_brief,\n      copy_angle:       strategy.copy_angle,\n      reference_insight: strategy.reference_insight,\n      reason:           strategy.reason,\n      priority:         strategy.priority,\n      timeframe:        strategy.timeframe,\n    },\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2416,
+        -544
+      ],
+      "id": "4a2f2365-4804-419c-a59c-64e222ca07e0",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst markdownItem = items.find(i => i.json.markdown);\nconst dataItem     = items.find(i => i.json.allBrands);\n\nconst markdown  = markdownItem?.json?.markdown;\nif (!markdown) throw new Error('No markdown found in input');\n\nconst allBrands = dataItem?.json?.allBrands || [];\nconst competitors = allBrands\n  .filter(b => !b.is_own)\n  .sort((a, b) => (a.position || 99) - (b.position || 99));\n\n// ── Competitor bar chart (pure CSS, email-safe) ───────────────\nfunction buildCompetitorChart(brands) {\n  if (!brands.length) return '';\n\n  const maxVis = Math.max(...brands.map(b => b.visibility || 0), 0.01);\n\n  const sentimentColor = (tier) =>\n    tier === 'bad' ? '#e74c3c' : tier === 'normal' ? '#f39c12' : '#27ae60';\n\n  const statusBadge = (status) => {\n    const s = (status || '').toLowerCase();\n    const color = s.includes('vulnerable') ? '#e74c3c'\n                : s.includes('blue')       ? '#3498db'\n                :                            '#27ae60';\n    const label = s.includes('vulnerable') ? 'Vulnerable'\n                : s.includes('blue')       ? 'Blue Ocean'\n                :                            'Stable';\n    return `<span style=\"background:${color};color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:3px;white-space:nowrap\">${label}</span>`;\n  };\n\n  const bar = (pct, color) =>\n    `<div style=\"background:#f0f0f0;border-radius:3px;height:10px;width:100%;margin:2px 0\">\n      <div style=\"background:${color};border-radius:3px;height:10px;width:${Math.min(pct, 100).toFixed(1)}%\"></div>\n    </div>`;\n\n  const deltaCell = (n) => {\n    if (n === undefined || n === null) return '<span style=\"color:#ccc\">—</span>';\n    const sign  = n > 0 ? '+' : '';\n    const color = n > 0 ? '#27ae60' : n < 0 ? '#e74c3c' : '#888';\n    return `<span style=\"color:${color};font-weight:600;font-size:11px\">${sign}${n}</span>`;\n  };\n\n  const hasEvolution = brands.some(b => b.evolution);\n\n  const rows = brands.map(b => {\n    const visPct  = ((b.visibility || 0) / maxVis * 100).toFixed(1);\n    const sentPct = (b.sentiment || 0).toFixed(1);\n    const sColor  = sentimentColor(b.sentiment_tier);\n    const vuln    = b.vulnerability_score > 0\n      ? `<span style=\"font-size:11px;color:#888\">Vulnerability <strong style=\"color:#e74c3c\">${b.vulnerability_score}</strong></span>`\n      : '';\n    const ev = b.evolution;\n    const evolCol = hasEvolution ? `\n      <td style=\"padding:8px 0 8px 6px;vertical-align:middle;text-align:center;white-space:nowrap;min-width:90px\">\n        ${ev ? `\n          <div style=\"font-size:11px;line-height:1.8\">\n            <div>Vis ${deltaCell(ev.visibility_delta)}</div>\n            <div>Sent ${deltaCell(ev.sentiment_delta)}</div>\n            <div>Pos ${deltaCell(ev.position_delta)}</div>\n          </div>` : '<span style=\"color:#ccc;font-size:11px\">—</span>'}\n      </td>` : '';\n\n    return `<tr>\n      <td style=\"padding:8px 10px 8px 0;vertical-align:middle;width:120px;font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap\">${b.brand}</td>\n      <td style=\"padding:8px 6px;vertical-align:middle;width:120px\">\n        <div style=\"font-size:10px;color:#888;margin-bottom:2px\">Visibility <strong>${b.visibility}</strong></div>\n        ${bar(visPct, '#3498db')}\n      </td>\n      <td style=\"padding:8px 6px;vertical-align:middle;width:120px\">\n        <div style=\"font-size:10px;color:#888;margin-bottom:2px\">Sentiment <strong>${b.sentiment}</strong></div>\n        ${bar(sentPct, sColor)}\n      </td>\n      <td style=\"padding:8px 6px;vertical-align:middle;text-align:right;white-space:nowrap\">\n        ${statusBadge(b.market_status)}<br>\n        <span style=\"display:inline-block;margin-top:4px\">${vuln}</span>\n      </td>\n      ${evolCol}\n    </tr>`;\n  }).join('');\n\n  const evolHeader = hasEvolution\n    ? `<th style=\"font-size:11px;color:#888;font-weight:600;text-align:center;padding:0 0 6px 6px\">Yesterday → Today</th>`\n    : '';\n\n  return `<table style=\"width:100%;border-collapse:collapse;margin:4px 0\">\n  <thead>\n    <tr style=\"border-bottom:1px solid #f0f0f0\">\n      <th style=\"font-size:11px;color:#888;font-weight:600;text-align:left;padding:0 10px 6px 0\">Brand</th>\n      <th style=\"font-size:11px;color:#888;font-weight:600;text-align:left;padding:0 6px 6px\">Visibility</th>\n      <th style=\"font-size:11px;color:#888;font-weight:600;text-align:left;padding:0 6px 6px\">Sentiment Score</th>\n      <th style=\"font-size:11px;color:#888;font-weight:600;text-align:right;padding:0 6px 6px\">Status</th>\n      ${evolHeader}\n    </tr>\n  </thead>\n  <tbody>${rows}</tbody>\n</table>`;\n}\n\nconst competitorChartHtml = buildCompetitorChart(competitors);\n\n// ── Competitive Landscape (Top Threat / Attack Targets / Blue Ocean) ──\nfunction buildCompetitiveLandscape(cs) {\n  if (!cs) return '';\n  const parts = [];\n\n  // Blue Ocean\n  const blues = cs.blue_ocean_brands || [];\n  if (blues.length > 0) {\n    const blueRows = blues.map(b => `\n<tr style=\"border-bottom:1px solid #f5f5f5\">\n  <td style=\"padding:10px 12px 10px 0;font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;vertical-align:top\">${b.brand}</td>\n  <td style=\"padding:10px 12px;font-size:12px;color:#888;vertical-align:top;text-align:center\">${b.visibility}</td>\n  <td style=\"padding:10px 0 10px 12px;font-size:12px;color:#555;vertical-align:top\">${b.reason}</td>\n</tr>`).join('');\n\n    parts.push(`\n<div>\n  <div style=\"font-size:11px;font-weight:700;color:#3498db;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px\">Blue Ocean Opportunities</div>\n  <table style=\"width:100%;border-collapse:collapse\">\n    <thead>\n      <tr style=\"border-bottom:2px solid #f0f0f0\">\n        <th style=\"font-size:11px;color:#888;font-weight:600;text-align:left;padding:0 12px 6px 0\">Brand</th>\n        <th style=\"font-size:11px;color:#888;font-weight:600;text-align:center;padding:0 12px 6px\">Visibility</th>\n        <th style=\"font-size:11px;color:#888;font-weight:600;text-align:left;padding:0 0 6px 12px\">Opportunity</th>\n      </tr>\n    </thead>\n    <tbody>${blueRows}</tbody>\n  </table>\n</div>`);\n  }\n\n  return parts.join('');\n}\n\nconst competitiveLandscapeHtml = buildCompetitiveLandscape(\n  dataItem?.json?.competitive_summary\n);\n\n// ── Radar Chart: Own Brand vs Top Threat ─────────────────────\nfunction buildRadarChart(ownBrand, topThreat) {\n  if (!ownBrand || !topThreat) return '';\n\n  const cx = 200, cy = 175, r = 110;\n  const dims = [\n    { label: 'Visibility', val: b => (b.visibility || 0) * 100 },\n    { label: 'Sentiment',  val: b => b.sentiment || 0 },\n    { label: 'SoV',        val: b => (b.sov || 0) * 100 },\n    { label: 'Presence',   val: b => b.saturation || 0 },\n    { label: 'Authority',  val: b => Math.max(0, (6 - (b.position || 6)) / 5 * 100) },\n  ];\n  const n = dims.length;\n\n  const angle = i => (i * 2 * Math.PI / n) - Math.PI / 2;\n  const ax    = i => cx + r * Math.cos(angle(i));\n  const ay    = i => cy + r * Math.sin(angle(i));\n  const px    = (i, v) => cx + r * (Math.min(v, 100) / 100) * Math.cos(angle(i));\n  const py    = (i, v) => cy + r * (Math.min(v, 100) / 100) * Math.sin(angle(i));\n  const f     = n => n.toFixed(1);\n\n  const gridLevels = [0.25, 0.5, 0.75, 1.0];\n  const grids = gridLevels.map((lv, gi) => {\n    const pts = dims.map((_, i) =>\n      `${f(cx + r * lv * Math.cos(angle(i)))},${f(cy + r * lv * Math.sin(angle(i)))}`\n    ).join(' ');\n    return `<polygon points=\"${pts}\" fill=\"none\" stroke=\"${gi === 3 ? '#ddd' : '#f0f0f0'}\" stroke-width=\"1\"/>`;\n  }).join('');\n\n  const axes = dims.map((_, i) =>\n    `<line x1=\"${cx}\" y1=\"${cy}\" x2=\"${f(ax(i))}\" y2=\"${f(ay(i))}\" stroke=\"#e0e0e0\" stroke-width=\"1\"/>`\n  ).join('');\n\n  const poly = (brand, color, fill) => {\n    const pts = dims.map((d, i) => `${f(px(i, d.val(brand)))},${f(py(i, d.val(brand)))}`).join(' ');\n    return `<polygon points=\"${pts}\" fill=\"${fill}\" stroke=\"${color}\" stroke-width=\"2\" stroke-linejoin=\"round\"/>`;\n  };\n\n  const dots = (brand, color) => dims.map((d, i) =>\n    `<circle cx=\"${f(px(i, d.val(brand)))}\" cy=\"${f(py(i, d.val(brand)))}\" r=\"3.5\" fill=\"${color}\"/>`\n  ).join('');\n\n  const labelOffset = r + 22;\n  const anchorOf = i => {\n    const c = Math.cos(angle(i));\n    return c > 0.3 ? 'start' : c < -0.3 ? 'end' : 'middle';\n  };\n  const labels = dims.map((d, i) => {\n    const lx = cx + labelOffset * Math.cos(angle(i));\n    const ly = cy + labelOffset * Math.sin(angle(i)) + 4;\n    return `<text x=\"${f(lx)}\" y=\"${f(ly)}\" text-anchor=\"${anchorOf(i)}\" font-size=\"11\" font-weight=\"600\" fill=\"#555\" font-family=\"-apple-system,Arial,sans-serif\">${d.label}</text>`;\n  }).join('');\n\n  const legend = `\n    <rect x=\"120\" y=\"308\" width=\"10\" height=\"10\" fill=\"rgba(52,152,219,0.25)\" stroke=\"#3498db\" stroke-width=\"1.5\" rx=\"2\"/>\n    <text x=\"135\" y=\"317\" font-size=\"11\" font-weight=\"600\" fill=\"#1a1a2e\" font-family=\"-apple-system,Arial,sans-serif\">${ownBrand.brand}</text>\n    <rect x=\"240\" y=\"308\" width=\"10\" height=\"10\" fill=\"rgba(231,76,60,0.18)\" stroke=\"#e74c3c\" stroke-width=\"1.5\" rx=\"2\"/>\n    <text x=\"255\" y=\"317\" font-size=\"11\" font-weight=\"600\" fill=\"#1a1a2e\" font-family=\"-apple-system,Arial,sans-serif\">${topThreat.brand}</text>`;\n\n  return `<div style=\"text-align:center;margin:8px 0 16px\">\n  <svg width=\"400\" height=\"335\" viewBox=\"0 0 400 335\" xmlns=\"http://www.w3.org/2000/svg\">\n    ${grids}${axes}\n    ${poly(topThreat, '#e74c3c', 'rgba(231,76,60,0.15)')}\n    ${poly(ownBrand,  '#3498db', 'rgba(52,152,219,0.22)')}\n    ${dots(topThreat, '#e74c3c')}\n    ${dots(ownBrand,  '#3498db')}\n    ${labels}${legend}\n  </svg>\n</div>`;\n}\n\nconst ownBrand    = allBrands.find(b => b.is_own);\nconst topThreatName = dataItem?.json?.competitive_summary?.top_threat?.brand;\nconst topThreatBrand = allBrands.find(b => b.brand === topThreatName);\nconst radarChartHtml = buildRadarChart(ownBrand, topThreatBrand);\n\n// ── Markdown → HTML ───────────────────────────────────────────\nfunction mdToHtml(md) {\n  const lines = md.split('\\n');\n  const body  = [];\n  let inList        = false;\n  let inTable       = false;\n  let isFirstDataRow = true;\n  let sectionBuffer = [];\n\n  const priorityMeta = { HIGH: '#e74c3c', MEDIUM: '#f39c12', LOW: '#27ae60' };\n\n  const badge = (level) => {\n    const color = priorityMeta[level] || '#888';\n    return `<span style=\"background:${color};color:#fff;font-size:11px;font-weight:bold;padding:2px 7px;border-radius:3px\">${level}</span>`;\n  };\n\n  const inline = (text) => text\n    .replace(/\\*\\*(.+?)\\*\\*/g, '<strong>$1</strong>')\n    .replace(/\\*(.+?)\\*/g, '<em>$1</em>')\n    .replace(/`(.+?)`/g, '<code style=\"background:#f0f0f0;padding:1px 4px;border-radius:3px;font-size:13px\">$1</code>')\n    .replace(/\\[(.+?)\\]\\((https?:\\/\\/[^\\)]+)\\)/g, '<a href=\"$2\" style=\"color:#3498db;text-decoration:none\">$1</a>');\n\n  const headingWithBadge = (text) => {\n    const m = text.match(/^\\[(HIGH|MEDIUM|LOW)\\]\\s*/i);\n    if (!m) return inline(text);\n    return `${badge(m[1].toUpperCase())} ${inline(text.slice(m[0].length))}`;\n  };\n\n  const boldPriorityLine = (text) => {\n    const m = text.match(/^\\*\\*\\[(HIGH|MEDIUM|LOW)\\]\\s*(.+?)\\*\\*$/i);\n    if (!m) return null;\n    const color = priorityMeta[m[1].toUpperCase()] || '#888';\n    return `<div style=\"border-left:3px solid ${color};padding:6px 12px;margin:12px 0 4px;background:#fafafa;border-radius:0 6px 6px 0;font-size:13px;font-weight:700;color:${color}\">${badge(m[1].toUpperCase())} ${m[2]}</div>`;\n  };\n\n  const cellContent = (text) => {\n    const priorityMatch = text.match(/^(HIGH|MEDIUM|LOW)$/i);\n    if (priorityMatch) return badge(priorityMatch[1].toUpperCase());\n    const deltaMatch = text.match(/^([+\\-]\\d+\\.?\\d*)$/);\n    if (deltaMatch) {\n      const val = parseFloat(deltaMatch[1]);\n      const color = val > 0 ? '#27ae60' : val < 0 ? '#e74c3c' : '#888';\n      return `<span style=\"color:${color};font-weight:600\">${text}</span>`;\n    }\n    const trendMatch = text.match(/^[↑↓→]$/);\n    if (trendMatch) {\n      const color = text === '↑' ? '#27ae60' : text === '↓' ? '#e74c3c' : '#888';\n      return `<span style=\"color:${color};font-size:16px\">${text}</span>`;\n    }\n    return inline(text);\n  };\n\n  const flushSection = () => {\n    if (sectionBuffer.length === 0) return;\n    body.push(`<div style=\"background:#fff;border:1px solid #e8e8e8;border-radius:8px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.05);text-align:left\">`);\n    body.push(...sectionBuffer);\n    body.push('</div>');\n    sectionBuffer = [];\n  };\n\n  for (let i = 0; i < lines.length; i++) {\n    const line = lines[i];\n\n    // Competitor chart placeholder\n    if (line.trim() === '<!-- COMPETITORS_CHART -->') {\n      sectionBuffer.push(competitorChartHtml);\n      continue;\n    }\n\n    // Radar chart placeholder\n    if (line.trim() === '<!-- RADAR_CHART -->') {\n      sectionBuffer.push(radarChartHtml);\n      continue;\n    }\n\n    // Competitive landscape placeholder\n    if (line.trim() === '<!-- COMPETITIVE_LANDSCAPE -->') {\n      sectionBuffer.push(competitiveLandscapeHtml);\n      continue;\n    }\n\n    // Table\n    if (line.startsWith('|')) {\n      if (!inTable) {\n        if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n        sectionBuffer.push('<table style=\"border-collapse:collapse;width:100%;margin:10px 0;font-size:13px\">');\n        inTable = true;\n        isFirstDataRow = true;\n      }\n      if (line.match(/^\\|[-| :]+\\|$/)) continue;\n      const cells = line.split('|').filter((_, i, a) => i > 0 && i < a.length - 1).map(c => c.trim());\n      if (isFirstDataRow) {\n        isFirstDataRow = false;\n        sectionBuffer.push('<thead><tr>' + cells.map(c =>\n          `<th style=\"border:1px solid #e0e0e0;padding:8px 10px;background:#f7f7f7;text-align:left;font-weight:600;color:#555\">${inline(c)}</th>`\n        ).join('') + '</tr></thead><tbody>');\n      } else {\n        sectionBuffer.push('<tr>' + cells.map((c, ci) =>\n          `<td style=\"border:1px solid #e0e0e0;padding:8px 10px;${ci === 0 ? 'font-weight:500' : ''}\">${cellContent(c)}</td>`\n        ).join('') + '</tr>');\n      }\n      continue;\n    } else if (inTable) {\n      sectionBuffer.push('</tbody></table>');\n      inTable = false;\n    }\n\n    if (line.trim() === '') {\n      if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n      continue;\n    }\n\n    // Horizontal rule — divider between matrix entries\n    if (line.trim() === '---') {\n      if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n      sectionBuffer.push('<hr style=\"border:none;border-top:1px solid #e8e8e8;margin:20px 0\">');\n      continue;\n    }\n\n    // H1 — email header banner\n    if (line.startsWith('# ')) {\n      flushSection();\n      const title = line.slice(2);\n      body.push(`\n<div style=\"background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-radius:10px;padding:28px 32px;margin-bottom:24px;text-align:center\">\n  <div style=\"color:#a0c4ff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px\">Strategic War Room · Peec AI</div>\n  <div style=\"color:#fff;font-size:22px;font-weight:700\">${inline(title)}</div>\n</div>`);\n      continue;\n    }\n\n    // H2 — new card\n    if (line.startsWith('## ')) {\n      flushSection();\n      sectionBuffer.push(`<h2 style=\"color:#1a1a2e;font-size:16px;font-weight:700;margin:0 0 14px;padding-bottom:10px;border-bottom:2px solid #f0f0f0\">${inline(line.slice(3))}</h2>`);\n      continue;\n    }\n\n    // H3 — subsection\n    if (line.startsWith('### ')) {\n      if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n      sectionBuffer.push(`<h3 style=\"color:#2c3e50;font-size:14px;font-weight:700;margin:14px 0 4px\">${headingWithBadge(line.slice(4))}</h3>`);\n      continue;\n    }\n\n    // H4 — sub-subsection (Signal Deep-Dive items, Content Deployment Briefs)\n    if (line.startsWith('#### ')) {\n      if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n      sectionBuffer.push(`<h4 style=\"color:#34495e;font-size:13px;font-weight:700;margin:12px 0 4px;padding-left:10px;border-left:3px solid #a0c4ff\">${headingWithBadge(line.slice(5))}</h4>`);\n      continue;\n    }\n\n    // Blockquote — merge consecutive > lines into one callout box\n    if (line.startsWith('> ')) {\n      if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n      const bqLines = [inline(line.slice(2))];\n      while (i + 1 < lines.length && lines[i + 1].startsWith('> ')) {\n        i++;\n        bqLines.push(inline(lines[i].slice(2)));\n      }\n      sectionBuffer.push(`<div style=\"border-left:3px solid #a0c4ff;padding:8px 14px;margin:10px 0;background:#f0f6ff;border-radius:0 6px 6px 0;font-size:13px;color:#2c3e50;line-height:1.8\">${bqLines.join('<br>')}</div>`);\n      continue;\n    }\n\n    // List item\n    if (line.startsWith('- ')) {\n      if (!inList) { sectionBuffer.push('<ul style=\"margin:6px 0;padding-left:18px;color:#444\">'); inList = true; }\n      const listContent = inline(line.slice(2));\n      // Highlight top-threat similarity rationale for faster scanning in email.\n      if (listContent.includes('<strong>Similarity Rationale:</strong>')) {\n        sectionBuffer.push(\n          `<li style=\"margin:6px 0;font-size:14px;list-style:none;padding:8px 10px;border-left:3px solid #3498db;background:#f4f9ff;border-radius:0 6px 6px 0\">${listContent}</li>`\n        );\n      } else {\n        sectionBuffer.push(`<li style=\"margin:5px 0;font-size:14px\">${listContent}</li>`);\n      }\n      continue;\n    }\n\n    // Bold priority line: **[HIGH] label**\n    if (inList) { sectionBuffer.push('</ul>'); inList = false; }\n    const boldPriority = boldPriorityLine(line.trim());\n    if (boldPriority) {\n      sectionBuffer.push(boldPriority);\n    } else {\n      sectionBuffer.push(`<p style=\"margin:5px 0 8px;font-size:14px;color:#444\">${inline(line)}</p>`);\n    }\n  }\n\n  if (inList)  sectionBuffer.push('</ul>');\n  if (inTable) sectionBuffer.push('</tbody></table>');\n  flushSection();\n\n  return `<!DOCTYPE html><html><body style=\"margin:0;padding:0;background:#f4f6f9\">\n<div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;max-width:680px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.6;text-align:left\">\n${body.join('\\n')}\n<div style=\"text-align:center;color:#aaa;font-size:12px;margin-top:24px;padding-top:16px;border-top:1px solid #e8e8e8\">\n  Generated by Peec AI · ${new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}\n</div>\n</div></body></html>`;\n}\n\nreturn [{ json: { html: mdToHtml(markdown) } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2976,
+        -704
+      ],
+      "id": "9d16de49-aed2-4201-a988-cdbad9c372ae",
+      "name": "json to html email"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 放在 Merge 和 AI Agent 之間\n// 把所有 items 壓縮成 1 個，讓 AI Agent 只跑一次\nconst allData = $input.all().map(i => i.json);\n\nconst strategy   = allData.find(d => d.copy_brief)    || {};\nconst urlMetas   = allData.filter(d => d.url && !d.content);\nconst urlContents = allData\n  .filter(d => Array.isArray(d.content))\n  .map(d => {\n    const text = d.content?.[0]?.text || {};\n    return {\n      url:              text.url,\n      title:            text.title,\n      domain:           text.domain,\n      classification:   text.classification,\n      content:          text.content,\n    };\n  });\n\nreturn [{\n  json: {\n    strategy,\n    url_metas:    urlMetas,\n    url_contents: urlContents,\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        144
+      ],
+      "id": "5876942e-9a4e-4903-a284-7780d6e1021d",
+      "name": "consolidate_for_agent"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "get_brand_report",
+          "mode": "list",
+          "cachedResultName": "get_brand_report"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.yesterday }}",
+            "end_date": "={{ $json.yesterday }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -688
+      ],
+      "id": "b5ed0667-c068-421a-9eab-e714e6162880",
+      "name": "get_brand_report_yesterday",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://api.peec.ai/mcp",
+        "authentication": "mcpOAuth2Api",
+        "tool": {
+          "__rl": true,
+          "value": "get_brand_report",
+          "mode": "list",
+          "cachedResultName": "get_brand_report"
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "project_id": "REPLACE_WITH_PROJECT_ID",
+            "start_date": "={{ $json.today }}",
+            "end_date": "={{ $json.today }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "project_id",
+              "displayName": "project_id",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "start_date",
+              "displayName": "start_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "end_date",
+              "displayName": "end_date",
+              "defaultMatch": false,
+              "required": true,
+              "display": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "prompt_id",
+              "displayName": "prompt_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "chat_id",
+              "displayName": "chat_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "model_id",
+              "displayName": "model_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "chatgpt-scraper",
+                  "value": "chatgpt-scraper"
+                },
+                {
+                  "name": "gpt-4o",
+                  "value": "gpt-4o"
+                },
+                {
+                  "name": "gpt-4o-search",
+                  "value": "gpt-4o-search"
+                },
+                {
+                  "name": "gpt-3.5-turbo",
+                  "value": "gpt-3.5-turbo"
+                },
+                {
+                  "name": "llama-sonar",
+                  "value": "llama-sonar"
+                },
+                {
+                  "name": "perplexity-scraper",
+                  "value": "perplexity-scraper"
+                },
+                {
+                  "name": "sonar",
+                  "value": "sonar"
+                },
+                {
+                  "name": "gemini-2.5-flash",
+                  "value": "gemini-2.5-flash"
+                },
+                {
+                  "name": "gemini-scraper",
+                  "value": "gemini-scraper"
+                },
+                {
+                  "name": "google-ai-overview-scraper",
+                  "value": "google-ai-overview-scraper"
+                },
+                {
+                  "name": "google-ai-mode-scraper",
+                  "value": "google-ai-mode-scraper"
+                },
+                {
+                  "name": "llama-3.3-70b-instruct",
+                  "value": "llama-3.3-70b-instruct"
+                },
+                {
+                  "name": "deepseek-r1",
+                  "value": "deepseek-r1"
+                },
+                {
+                  "name": "claude-3.5-haiku",
+                  "value": "claude-3.5-haiku"
+                },
+                {
+                  "name": "claude-haiku-4.5",
+                  "value": "claude-haiku-4.5"
+                },
+                {
+                  "name": "claude-sonnet-4",
+                  "value": "claude-sonnet-4"
+                },
+                {
+                  "name": "grok-scraper",
+                  "value": "grok-scraper"
+                },
+                {
+                  "name": "microsoft-copilot-scraper",
+                  "value": "microsoft-copilot-scraper"
+                },
+                {
+                  "name": "grok-4",
+                  "value": "grok-4"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "model_channel_id",
+              "displayName": "model_channel_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "openai-0",
+                  "value": "openai-0"
+                },
+                {
+                  "name": "openai-1",
+                  "value": "openai-1"
+                },
+                {
+                  "name": "openai-2",
+                  "value": "openai-2"
+                },
+                {
+                  "name": "perplexity-0",
+                  "value": "perplexity-0"
+                },
+                {
+                  "name": "perplexity-1",
+                  "value": "perplexity-1"
+                },
+                {
+                  "name": "google-0",
+                  "value": "google-0"
+                },
+                {
+                  "name": "google-1",
+                  "value": "google-1"
+                },
+                {
+                  "name": "google-2",
+                  "value": "google-2"
+                },
+                {
+                  "name": "google-3",
+                  "value": "google-3"
+                },
+                {
+                  "name": "anthropic-0",
+                  "value": "anthropic-0"
+                },
+                {
+                  "name": "anthropic-1",
+                  "value": "anthropic-1"
+                },
+                {
+                  "name": "deepseek-0",
+                  "value": "deepseek-0"
+                },
+                {
+                  "name": "meta-0",
+                  "value": "meta-0"
+                },
+                {
+                  "name": "xai-0",
+                  "value": "xai-0"
+                },
+                {
+                  "name": "xai-1",
+                  "value": "xai-1"
+                },
+                {
+                  "name": "microsoft-0",
+                  "value": "microsoft-0"
+                }
+              ],
+              "removed": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "tag_id",
+              "displayName": "tag_id",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "limit",
+              "displayName": "limit",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            },
+            {
+              "id": "offset",
+              "displayName": "offset",
+              "defaultMatch": false,
+              "required": false,
+              "display": true,
+              "type": "number",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        304,
+        -512
+      ],
+      "id": "d9b996d8-1604-4396-831f-b89bf733b4bf",
+      "name": "get_brand_report_today",
+      "credentials": {
+        "mcpOAuth2Api": {
+          "id": "REDACTED_CREDENTIAL_ID",
+          "name": "REDACTED_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        -624
+      ],
+      "id": "8739a1cf-c983-40ed-af45-976c3eea3910",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {
+        "jsCode": "const today = new Date();\nconst yesterday = new Date(today);\nyesterday.setDate(today.getDate() - 1);\n\nconst toISO = (d) => d.toISOString().split('T')[0];\n\nreturn {\n\ttoday: toISO(today),\n\tyesterday: toISO(yesterday),\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        -144
+      ],
+      "id": "29474bf6-90a4-49fa-955d-4403da473580",
+      "name": "time range"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "time range",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Report Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_search_queries": {
+      "main": [
+        [
+          {
+            "node": "clean_search_queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "list_shopping_queries1": {
+      "main": [
+        [
+          {
+            "node": "clean_shopping_queries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge_data": {
+      "main": [
+        [
+          {
+            "node": "Report Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clean_brand_report": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clean_shopping_queries": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "clean_search_queries": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "clean_domain_reports": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "get_domain_report": {
+      "main": [
+        [
+          {
+            "node": "clean_domain_reports",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "merge_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send an Email": {
+      "main": [
+        []
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "json to markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "json to markdown": {
+      "main": [
+        [
+          {
+            "node": "json to html email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Strategy Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extract_agent_sections": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_url_content": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "get_url_content1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "get_url_content1": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "consolidate_for_agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Content Generation Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Content Generation Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "id_content_combine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Report Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "extract_agent_sections",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Strategy Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Generation Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "id_content_combine": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "json to html email": {
+      "main": [
+        [
+          {
+            "node": "Send an Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "consolidate_for_agent": {
+      "main": [
+        [
+          {
+            "node": "Strategy Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_brand_report_today": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "get_brand_report_yesterday": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "clean_brand_report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "time range": {
+      "main": [
+        [
+          {
+            "node": "list_search_queries",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "get_brand_report_today",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "list_shopping_queries1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "get_domain_report",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "get_url_content",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "get_brand_report_yesterday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6be0f6e8-9056-4e7b-bdab-a8430493685b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e40e0cef06c15d8d0dd3cf1d681783a284b77d709d92a0076b8f52a72eabd50d"
+  },
+  "id": "TkXLaF1EJYQILVDd",
+  "tags": []
+}
