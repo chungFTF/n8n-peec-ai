@@ -32,8 +32,12 @@ if (typeof raw.output === 'string') {
 }
 
 // Brand report from clean_brand_report.js (passed via Merge node)
+// Supports both: { source: 'get_brand_report', detailed_analysis: [...] }
+// and direct: { allBrands: [...] } from the merged item
 const brandReportItem = allItems.find(i => i.json.source === 'get_brand_report');
-const allBrands = brandReportItem?.json?.detailed_analysis || [];
+const allBrands = brandReportItem?.json?.detailed_analysis
+  || allItems.find(i => Array.isArray(i.json.allBrands))?.json?.allBrands
+  || [];
 
 // Content strategy matrix items from combine_strategy_with_docs.js
 const strategyItems = allItems.filter(i => i.json.documentId && i.json.copy_direction);
@@ -99,16 +103,8 @@ lines.push('## 4. DOMINATE — Action Plan');
 lines.push('*Strategic moves to capture market territory*');
 lines.push('');
 
-if ((d.action_plan || []).length > 0) {
-  lines.push('### Action Commands');
-  lines.push('| Priority | Timeframe | Action Item | Rationale |');
-  lines.push('|----------|-----------|-------------|-----------|');
-  d.action_plan.forEach(a => {
-    const priority = (a.priority || '').toUpperCase();
-    lines.push(`| ${priority} | ${a.timeframe} | ${a.action} | ${a.rationale} |`);
-  });
-  lines.push('');
-}
+lines.push('<!-- DOMINATE_ACTIONS -->');
+lines.push('');
 
 // ══════════════════════════════════════════════════════════════
 // 5. DIRECT & DRIVE — Content Deployment
@@ -118,24 +114,8 @@ lines.push('## 5. DIRECT & DRIVE — Content Deployment');
 lines.push('*Closed loop: Monitor → Analyze → Direct → Execute*');
 lines.push('');
 
-if (strategyItems.length > 0) {
-  lines.push('### Content Deployment Briefs');
-  strategyItems.forEach((item, idx) => {
-    if (idx > 0) lines.push('---');
-    const s = item.json;
-    const docUrl = `https://docs.google.com/document/d/${s.documentId}`;
-    const priorityLabel = (s.priority || '').toUpperCase();
-    lines.push(`#### [${priorityLabel}] ${s.platform} — ${s.platform_type}`);
-    if (s.five_d) lines.push(`**[5D: ${s.five_d}]**`);
-    if (s.psychology || s.elm_path) lines.push(`**[PSYCHOLOGY: ${s.psychology || s.elm_path}]**`);
-    lines.push(`**Copy Direction:** ${s.copy_direction}`);
-    lines.push(`**Audience:** ${s.audience}`);
-    lines.push(`**Content Brief:** ${s.content_brief}`);
-    if (s.reference_insight) lines.push(`**Reference Insight:** ${s.reference_insight}`);
-    lines.push(`**Document:** [Open Google Doc](${docUrl})`);
-    lines.push('');
-  });
-}
+lines.push('<!-- DIRECT_DRIVE_BRIEFS -->');
+lines.push('');
 
 lines.push('---');
 lines.push('*This dashboard is a living document. Peec AI refreshes competitive signals every 6 hours.*');
@@ -145,4 +125,5 @@ const markdown = lines.join('\n');
 return [
   { json: { ...data, allBrands } },
   { json: { markdown } },
+  ...strategyItems,
 ];

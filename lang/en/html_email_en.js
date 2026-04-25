@@ -283,6 +283,117 @@ function buildDefenseAlerts(data) {
   }).join('');
 }
 
+// ── D4 Dominate Action Cards ──────────────────────────────────
+function buildDominateActions(data) {
+  const actions = data?.action_plan || [];
+  if (!actions.length) {
+    return `<div style="color:#aaa;font-size:13px;padding:8px 0">No action plan data available.</div>`;
+  }
+
+  const priorityMeta = {
+    HIGH:   { color: '#e74c3c', bg: '#fff5f5', label: 'HIGH PRIORITY' },
+    MEDIUM: { color: '#e67e22', bg: '#fffdf5', label: 'MEDIUM'        },
+    LOW:    { color: '#2980b9', bg: '#f0f6ff', label: 'LOW'           },
+  };
+
+  // Sort HIGH first, then MEDIUM, then LOW
+  const order = { HIGH: 0, MEDIUM: 1, LOW: 2 };
+  const sorted = [...actions].sort((a, b) =>
+    (order[(a.priority || '').toUpperCase()] ?? 9) - (order[(b.priority || '').toUpperCase()] ?? 9)
+  );
+
+  return sorted.map((a, idx) => {
+    const pri  = (a.priority || '').toUpperCase();
+    const meta = priorityMeta[pri] || { color: '#888', bg: '#f9f9f9', label: pri || '—' };
+    const num  = idx + 1;
+    return `
+<div style="border-left:4px solid ${meta.color};background:${meta.bg};border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:12px">
+  <table style="width:100%;border-collapse:collapse"><tr>
+    <td style="vertical-align:middle;padding:0">
+      <span style="background:${meta.color};color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:3px;letter-spacing:0.5px">${meta.label}</span>
+      <span style="font-size:12px;color:#aaa;margin-left:8px">Action #${num}</span>
+    </td>
+    <td style="text-align:right;vertical-align:middle;padding:0;white-space:nowrap">
+      <span style="font-size:11px;color:#888;background:#f0f0f0;padding:3px 10px;border-radius:3px">⏱ ${a.timeframe || '—'}</span>
+    </td>
+  </tr></table>
+  <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin:10px 0 8px;line-height:1.4">${a.action || '—'}</div>
+  <div style="font-size:13px;color:#666;line-height:1.6;padding:8px 12px;background:rgba(0,0,0,0.03);border-radius:4px;border-left:3px solid ${meta.color}50">
+    <span style="font-size:10px;color:${meta.color};font-weight:700;letter-spacing:1px;display:block;margin-bottom:4px">◈ RATIONALE</span>
+    ${a.rationale || '—'}
+  </div>
+</div>`;
+  }).join('');
+}
+
+// ── D5 Direct & Drive — Content Strike Briefs ────────────────
+function buildDirectDriveBriefs(_data, strategyItems) {
+  if (!strategyItems || !strategyItems.length) {
+    return `<div style="color:#aaa;font-size:13px;padding:8px 0">No content briefs generated in this cycle.</div>`;
+  }
+
+  const priMeta = {
+    HIGH:   { color: '#e74c3c', bg: '#fff5f5' },
+    MEDIUM: { color: '#e67e22', bg: '#fffdf5' },
+    LOW:    { color: '#2980b9', bg: '#f0f6ff' },
+  };
+
+  const elmLabel = path => {
+    const p = (path || '').toLowerCase();
+    if (p === 'central')    return { label: 'Cognitive Route', color: '#2980b9' };
+    if (p === 'peripheral') return { label: 'Emotional Route', color: '#8e44ad' };
+    return { label: path || '—', color: '#888' };
+  };
+
+  const dirLabel = dir => {
+    const d = (dir || '').toUpperCase();
+    if (d === 'ATTACK')        return 'Competitive Attack';
+    if (d === 'CONSIDERATION') return 'Consideration Capture';
+    if (d === 'DEFENSE')       return 'Brand Defense';
+    if (d === 'AWARENESS')     return 'Awareness Expansion';
+    return dir || '—';
+  };
+
+  return strategyItems.map((item, idx) => {
+    const s   = item.json || item;
+    const pri = (s.priority || '').toUpperCase();
+    const meta = priMeta[pri] || { color: '#888', bg: '#f9f9f9' };
+    const elm  = elmLabel(s.elm_path);
+    const docUrl = s.documentId ? `https://docs.google.com/document/d/${s.documentId}` : null;
+
+    const divider = idx > 0 ? `<div style="height:12px"></div>` : '';
+
+    return `${divider}
+<div style="border:1px solid ${meta.color}25;background:${meta.bg};border-radius:8px;padding:14px 18px">
+
+  <!-- Platform-first header -->
+  <div style="margin-bottom:10px">
+    <span style="display:inline-block;font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:0.2px;line-height:1.2">${s.platform || '—'}</span>
+    ${s.platform_type ? `<span style="font-size:11px;color:#888;margin-left:6px;vertical-align:middle">· ${s.platform_type}</span>` : ''}
+  </div>
+
+  <!-- Compact meta row -->
+  <div style="margin-bottom:10px">
+    <span style="display:inline-block;background:${meta.color};color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:0.5px">${pri || '—'}</span>
+    <span style="display:inline-block;margin-left:6px;background:#ffffff;color:#555;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;border:1px solid #e8e8e8;letter-spacing:0.5px">${dirLabel(s.copy_direction)}</span>
+    <span style="display:inline-block;margin-left:6px;background:#ffffff;color:${elm.color};font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;border:1px solid #e8e8e8;letter-spacing:0.5px">${elm.label}</span>
+    ${s.psychological_tactic ? `<span style="display:inline-block;margin-left:6px;background:#ffffff;color:#666;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;border:1px solid #e8e8e8;letter-spacing:0.5px">${s.psychological_tactic}</span>` : ''}
+  </div>
+
+  <!-- Audience + brief -->
+  ${s.audience ? `<div style="font-size:12px;color:#555;margin-bottom:8px"><strong style="color:#333">Audience:</strong> ${s.audience}</div>` : ''}
+  <div style="font-size:13px;color:#333;line-height:1.65;padding:10px 12px;background:#fff;border-radius:6px;border:1px solid ${meta.color}22">${s.content_brief || '—'}</div>
+
+  <!-- CTA button -->
+  ${docUrl ? `
+  <a href="${docUrl}" style="display:inline-block;margin-top:12px;background:#1a1a2e;color:#fff;font-size:12px;font-weight:700;padding:9px 16px;border-radius:5px;text-decoration:none;letter-spacing:0.3px">
+    Open Data-Driven AI Brief →
+  </a>` : ''}
+
+</div>`;
+  }).join('');
+}
+
 const inferElmPath = (dir) =>
   ['ATTACK', 'CONSIDERATION'].includes((dir || '').toUpperCase()) ? 'central' : 'peripheral';
 
@@ -299,6 +410,8 @@ const dashboard5DData = {
 const dashboard5DHtml    = build5DDashboard(dashboard5DData);
 const detectScorecardHtml = buildDetectScorecard(dataItem?.json);
 const defenseAlertsHtml   = buildDefenseAlerts(dataItem?.json);
+const dominateActionsHtml    = buildDominateActions(dataItem?.json);
+const directDriveBriefsHtml  = buildDirectDriveBriefs(dataItem?.json, matrixFromItems);
 
 // ── Competitive Landscape (Top Threat / Attack Targets / Blue Ocean) ──
 function buildCompetitiveLandscape(cs) {
@@ -519,6 +632,18 @@ function mdToHtml(md) {
     // DEFENSE alerts placeholder
     if (line.trim() === '<!-- DEFENSE_ALERTS -->') {
       sectionBuffer.push(defenseAlertsHtml);
+      continue;
+    }
+
+    // DOMINATE action cards placeholder
+    if (line.trim() === '<!-- DOMINATE_ACTIONS -->') {
+      sectionBuffer.push(dominateActionsHtml);
+      continue;
+    }
+
+    // DIRECT & DRIVE content strike briefs placeholder
+    if (line.trim() === '<!-- DIRECT_DRIVE_BRIEFS -->') {
+      sectionBuffer.push(directDriveBriefsHtml);
       continue;
     }
 

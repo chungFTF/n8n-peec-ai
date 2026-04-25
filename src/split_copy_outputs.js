@@ -35,12 +35,75 @@ if (typeof raw.output === 'string') {
 const matrixItem = allItems.find(i => i.json.copy_instruction_matrix);
 const matrix = matrixItem?.json?.copy_instruction_matrix || [];
 const matrixByPlatform = {};
-matrix.forEach(m => { matrixByPlatform[m.platform] = m; });
+const matrixByDirPriority = {};
+
+function normalize(v) {
+  return String(v || '').trim().toLowerCase();
+}
+
+function dirPriorityKey(obj) {
+  const direction = normalize(obj?.copy_direction);
+  const priority = normalize(obj?.priority);
+  if (!direction || !priority) return null;
+  return `${direction}::${priority}`;
+}
+
+function hasStrategyMeta(obj) {
+  return Boolean(obj?.reference_insight || obj?.reason || obj?.timeframe);
+}
+
+matrix.forEach(m => {
+  if (!m) return;
+  if (m.platform) matrixByPlatform[m.platform] = m;
+
+  const key = dirPriorityKey(m);
+  if (!key) return;
+  if (!matrixByDirPriority[key]) matrixByDirPriority[key] = [];
+  matrixByDirPriority[key].push(m);
+});
+
+// Fallback metadata source:
+// Some workflows do not pass copy_instruction_matrix into this node.
+// In that case, reuse any incoming items that already carry strategy metadata.
+const fallbackByPlatform = {};
+const fallbackByDirPriority = {};
+allItems.forEach(i => {
+  const j = i.json || {};
+  if (!j.platform) return;
+  if (!hasStrategyMeta(j)) return;
+  fallbackByPlatform[j.platform] = j;
+
+  const key = dirPriorityKey(j);
+  if (!key) return;
+  if (!fallbackByDirPriority[key]) fallbackByDirPriority[key] = [];
+  fallbackByDirPriority[key].push(j);
+});
 
 const items = data.copy_outputs || [];
 
 return items.map(item => {
-  const mx = matrixByPlatform[item.platform] || {};
+  let mx = matrixByPlatform[item.platform] || {};
+
+  if (!hasStrategyMeta(mx)) {
+    const key = dirPriorityKey(item);
+    const matrixCandidates = key ? (matrixByDirPriority[key] || []) : [];
+    if (matrixCandidates.length > 0) {
+      mx = matrixCandidates.shift();
+    }
+  }
+
+  if (!hasStrategyMeta(mx)) {
+    mx = fallbackByPlatform[item.platform] || {};
+  }
+
+  if (!hasStrategyMeta(mx)) {
+    const key = dirPriorityKey(item);
+    const fallbackCandidates = key ? (fallbackByDirPriority[key] || []) : [];
+    if (fallbackCandidates.length > 0) {
+      mx = fallbackCandidates.shift();
+    }
+  }
+
   const hooksText = (item.hooks || []).map((h, i) => `Hook ${i + 1}: ${h}`).join('\n');
 
   const docTitle = `[${item.platform}] ${item.copy_direction} — ${item.headline}`;
@@ -50,6 +113,9 @@ return items.map(item => {
     `Priority: ${item.priority}`,
     `Copy Direction: ${item.copy_direction}`,
     mx.timeframe ? `Timeframe: ${mx.timeframe}` : '',
+    '',
+    mx.reference_insight ? `Brief Context:\n${mx.reference_insight}` : '',
+    mx.reason ? `Rationale: ${mx.reason}` : '',
     '',
     `Headline: ${item.headline}`,
     `Subheadline: ${item.subheadline}`,
@@ -61,7 +127,6 @@ return items.map(item => {
     hooksText,
     '',
     `CTA: ${item.cta}`,
-    mx.reason ? `\nRationale: ${mx.reason}` : '',
   ].filter(line => line !== undefined).join('\n');
 
   return {
