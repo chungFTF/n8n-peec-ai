@@ -1,6 +1,6 @@
 # Armani 5D Daily Intelligence (Non-Technical + Strategy Logic)
 
-> Chinese version (中文): [WORKFLOW_5D_NONTECH_CN.md](./WORKFLOW_5D_NONTECH_CN.md)
+> Chinese version (中文): [WORKFLOW_5D_NONTECH_ZH.md](./WORKFLOW_5D_NONTECH_ZH.md)
 
 ### 1) What this system does
 

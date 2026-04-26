@@ -79,10 +79,8 @@ For a longer walkthrough (repository layout, credentials, outputs, and maintenan
 
 Technical and non-technical guides are split by language:
 
-- **Technical:** [`docs/WORKFLOW_5D_CN.md`](docs/WORKFLOW_5D_CN.md) (Chinese) · [`docs/WORKFLOW_5D_EN.md`](docs/WORKFLOW_5D_EN.md) (English)
-- **Non-technical:** [`docs/WORKFLOW_5D_NONTECH_CN.md`](docs/WORKFLOW_5D_NONTECH_CN.md) (Chinese) · [`docs/WORKFLOW_5D_NONTECH_EN.md`](docs/WORKFLOW_5D_NONTECH_EN.md) (English)
-
-Short language indexes (same links as above): [`docs/WORKFLOW_5D_CN_EN.md`](docs/WORKFLOW_5D_CN_EN.md), [`docs/WORKFLOW_5D_NONTECH_CN_EN.md`](docs/WORKFLOW_5D_NONTECH_CN_EN.md).
+- **Technical:** [`docs/WORKFLOW_5D_ZH.md`](docs/WORKFLOW_5D_ZH.md) (Chinese) · [`docs/WORKFLOW_5D_EN.md`](docs/WORKFLOW_5D_EN.md) (English)
+- **Non-technical:** [`docs/WORKFLOW_5D_NONTECH_ZH.md`](docs/WORKFLOW_5D_NONTECH_ZH.md) (Chinese) · [`docs/WORKFLOW_5D_NONTECH_EN.md`](docs/WORKFLOW_5D_NONTECH_EN.md) (English)
 
 ## Additional reference
 

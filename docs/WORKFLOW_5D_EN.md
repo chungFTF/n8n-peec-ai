@@ -1,6 +1,6 @@
 # Armani-n8n-en Workflow Technical Guide
 
-> Chinese version (中文): [WORKFLOW_5D_CN.md](./WORKFLOW_5D_CN.md)
+> Chinese version (中文): [WORKFLOW_5D_ZH.md](./WORKFLOW_5D_ZH.md)
 
 ### 1) Project Scope and 5D Core
 
