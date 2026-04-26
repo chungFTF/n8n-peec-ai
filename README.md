@@ -10,7 +10,7 @@ This project follows a 5D operating model:
 - **D4 Dominate**: rank channels by urgency
 - **D5 Direct & Drive**: generate and publish execution-ready content
 
-> Disclaimer: Brand names used in examples are for demonstration and research only. This project is not affiliated with those brands.
+> **Disclaimer:** Any brand names or data mentioned in this project are used strictly for research and demonstration purposes to showcase the engine's capabilities.
 
 ## Why This Exists
 
@@ -71,12 +71,23 @@ lang/zh/                   Chinese prompts and renderers
 docs/                      Technical and non-technical documentation
 ```
 
-## Recommended Documentation
+## Detailed project guide
 
-- `docs/WORKFLOW_5D_CN_EN.md` - full technical guide (ZH/EN)
-- `docs/WORKFLOW_5D_NONTECH_CN_EN.md` - non-technical guide (ZH/EN)
-- `docs/ALGORITHM.md` - formula and decision logic notes
-- `docs/WORKFLOW.md` - workflow design and node-level context
+For a longer walkthrough (repository layout, credentials, outputs, and maintenance), see [`README-detail.md`](README-detail.md).
+
+## Workflow documentation
+
+Technical and non-technical guides are split by language:
+
+- **Technical:** [`docs/WORKFLOW_5D_CN.md`](docs/WORKFLOW_5D_CN.md) (Chinese) · [`docs/WORKFLOW_5D_EN.md`](docs/WORKFLOW_5D_EN.md) (English)
+- **Non-technical:** [`docs/WORKFLOW_5D_NONTECH_CN.md`](docs/WORKFLOW_5D_NONTECH_CN.md) (Chinese) · [`docs/WORKFLOW_5D_NONTECH_EN.md`](docs/WORKFLOW_5D_NONTECH_EN.md) (English)
+
+Short language indexes (same links as above): [`docs/WORKFLOW_5D_CN_EN.md`](docs/WORKFLOW_5D_CN_EN.md), [`docs/WORKFLOW_5D_NONTECH_CN_EN.md`](docs/WORKFLOW_5D_NONTECH_CN_EN.md).
+
+## Additional reference
+
+- [`docs/ALGORITHM.md`](docs/ALGORITHM.md) — formulas and decision logic
+- [`docs/WORKFLOW.md`](docs/WORKFLOW.md) — workflow design and node-level context
 
 ## Outputs
 

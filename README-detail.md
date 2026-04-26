@@ -121,9 +121,10 @@ Armani-n8n-en.json
 docs/
   ALGORITHM.md
   WORKFLOW.md
-  WORKFLOW_5D_CN_EN.md
-  WORKFLOW_5D_NONTECH_CN_EN.md
-  EXPLAIN-zh.md
+  WORKFLOW_5D_ZH.md
+  WORKFLOW_5D_EN.md
+  WORKFLOW_5D_NONTECH_ZH.md
+  WORKFLOW_5D_NONTECH_EN.md
 
 src/
   clean_brand_report.js
